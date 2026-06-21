@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSP Lifesciences Perú | Revisión Financiera Ejecutiva | Mayo 2026</title>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    /* ===== VARIABLES CORPORATIVAS (basadas en logo CSP) ===== */
+    :root{
+      --csp-blue: #0b2b5c;       /* azul oscuro del logo */
+      --csp-lightblue: #2b6a9e;  /* azul medio */
+      --csp-teal: #008c8c;       /* verde/teal secundario */
+      --csp-gold: #c9a84c;       /* dorado para acentos */
+      --csp-gray: #f0f2f5;       /* fondo gris claro */
+      --csp-white: #ffffff;
+      --csp-dark: #1a1a2e;
+      --csp-shadow: 0 10px 30px rgba(11, 43, 92, 0.15);
+      --csp-radius: 16px;
+    }
+
+    *{box-sizing:border-box; margin:0; padding:0;}
+    html,body{
+      margin:0;
+      padding:0;
+      background: var(--csp-gray);
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--csp-dark);
+      overflow:hidden;
+      height:100%;
+    }
+
+    .deck{
+      width:100vw;
+      height:100vh;
+      position:relative;
+      background: var(--csp-gray);
+    }
+
+    .slide{
+      display:none;
+      width:100vw;
+      height:100vh;
+      padding:28px 36px 60px;
+      background: var(--csp-white);
+      position:absolute;
+      inset:0;
+      overflow-y:auto;
+      scrollbar-width: thin;
+      box-shadow: inset 0 0 0 1px rgba(11,43,92,0.04);
+    }
+
+    .slide.active{display:block}
+
+    /* ===== TOPBAR CON GRADIENTE CORPORATIVO ===== */
+    .topbar{
+      height:6px;
+      width:100%;
+      background: linear-gradient(90deg, var(--csp-blue), var(--csp-teal), var(--csp-gold));
+      border-radius: 999px;
+      margin-bottom: 16px;
+    }
+
+    /* ===== TIPOGRAFÍA ===== */
+    .title{
+      font-size:30px;
+      line-height:1.2;
+      font-weight:800;
+      color: var(--csp-blue);
+      margin:0 0 4px 0;
+      letter-spacing: -0.3px;
+    }
+
+    .subtitle{
+      font-size:14px;
+      color: #5a6a7a;
+      margin-bottom:18px;
+      font-weight: 500;
+      border-bottom: 2px solid var(--csp-gold);
+      padding-bottom: 6px;
+      display: inline-block;
+    }
+
+    /* ===== TARJETAS ===== */
+    .card{
+      background: var(--csp-white);
+      border: 1px solid #e2e8f0;
+      border-radius: var(--csp-radius);
+      box-shadow: var(--csp-shadow);
+      padding:14px 16px;
+      transition: transform 0.1s ease;
+    }
+
+    .card.soft-blue{ background: #e8f0fe; border-color: #b8d0e8; }
+    .card.soft-teal{ background: #e6f5f5; border-color: #b3dfdf; }
+    .card.soft-gold{ background: #fcf6e8; border-color: #f0e0b8; }
+    .card.soft-gray{ background: #f8f9fa; border-color: #dee2e6; }
+
+    .section-title{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      color: #5a6a7a;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    /* ===== GRIDS ===== */
+    .grid-2{ display:grid; grid-template-columns: 1.1fr .9fr; gap:18px; }
+    .grid-3{ display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
+    .split{ display:grid; grid-template-columns: 1fr 1fr; gap:18px; }
+
+    /* ===== KPI ===== */
+    .kpi{
+      background: var(--csp-white);
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding:10px 12px;
+      box-shadow: var(--csp-shadow);
+    }
+    .kpi .label{
+      font-size:10px;
+      color: #5a6a7a;
+      font-weight:700;
+      margin-bottom:4px;
+      text-transform:uppercase;
+      letter-spacing:0.05em;
+    }
+    .kpi .value{
+      font-size:22px;
+      font-weight:800;
+      color: var(--csp-blue);
+    }
+    .kpi.green .value{ color: var(--csp-teal); }
+    .kpi.gold .value{ color: var(--csp-gold); }
+    .kpi.blue .value{ color: var(--csp-lightblue); }
+
+    /* ===== TABLAS ===== */
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+    }
+    th{
+      background: var(--csp-blue);
+      color: white;
+      padding:8px 10px;
+      text-align:left;
+      font-size:11px;
+      font-weight:600;
+    }
+    td{
+      padding:8px 10px;
+      border-bottom:1px solid #edf2f7;
+      background: white;
+    }
+    tr:nth-child(even) td{ background: #f9fafb; }
+    td.num{ text-align:right; font-weight:700; }
+
+    /* ===== LISTAS ===== */
+    .bullets{
+      margin:0;
+      padding-left:18px;
+      line-height:1.6;
+      font-size:15px;
+    }
+    .bullets li{ margin:2px 0; }
+
+    .metric-big{
+      font-size:36px;
+      font-weight:900;
+      color: var(--csp-blue);
+      line-height:1;
+      margin:2px 0 6px;
+    }
+    .metric-note{
+      font-size:13px;
+      color: #4a5a6a;
+      line-height:1.5;
+    }
+    .callout{
+      font-size:20px;
+      font-weight:800;
+      line-height:1.3;
+      color: var(--csp-blue);
+    }
+
+    /* ===== CHART CONTAINERS ===== */
+    .chart-container { position: relative; height: 150px; width: 100%; margin: 4px 0; }
+    .chart-container-sm { height: 120px; width: 100%; }
+
+    /* ===== ALERTAS ===== */
+    .alert-list{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
+    }
+    .alert{
+      border-radius:14px;
+      padding:14px 16px;
+      box-shadow: var(--csp-shadow);
+      border-left: 6px solid transparent;
+    }
+    .alert h4{ margin:0 0 4px; font-size:16px; color: var(--csp-blue); }
+    .alert p{ margin:0; line-height:1.5; font-size:14px; }
+    .alert.orange{ background:#fcf6e8; border-left-color: var(--csp-gold); }
+    .alert.red{ background:#fdecec; border-left-color: #b42318; }
+    .alert.blue{ background:#e8f0fe; border-left-color: var(--csp-lightblue); }
+    .alert.teal{ background:#e6f5f5; border-left-color: var(--csp-teal); }
+
+    /* ===== CHECKLIST ===== */
+    .checklist{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px 16px;
+    }
+    .checklist li{
+      background: var(--csp-white);
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding:12px 14px;
+      box-shadow: var(--csp-shadow);
+      font-size:14px;
+      font-weight:600;
+      color: var(--csp-blue);
+    }
+    .checklist li::before{
+      content: "✓ ";
+      color: var(--csp-teal);
+      font-weight:900;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer{
+      position:absolute;
+      bottom:12px;
+      left:36px;
+      right:36px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:11px;
+      color: #5a6a7a;
+      border-top: 1px solid rgba(0,0,0,0.05);
+      padding-top: 8px;
+    }
+
+    /* ===== NAVEGACIÓN ===== */
+    .nav{
+      position:fixed;
+      right:20px;
+      bottom:20px;
+      display:flex;
+      gap:8px;
+      z-index:20;
+    }
+    .nav button{
+      border: none;
+      background: var(--csp-blue);
+      color: white;
+      padding:8px 14px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow: var(--csp-shadow);
+      transition: all 0.15s;
+      font-size:13px;
+    }
+    .nav button:hover{ background: var(--csp-lightblue); transform: scale(1.02); }
+
+    .slide-counter{
+      position:fixed;
+      left:20px;
+      bottom:20px;
+      background: var(--csp-blue);
+      color: #fff;
+      padding:6px 12px;
+      border-radius:10px;
+      font-weight:700;
+      z-index:20;
+      box-shadow: var(--csp-shadow);
+      font-size:13px;
+      letter-spacing:0.3px;
+    }
+
+    /* ===== PORTADA MEJORADA ===== */
+    .title-slide{
+      background: linear-gradient(145deg, #ffffff 0%, #f5f8fc 100%);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .title-slide .logo-container{
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .title-slide .logo-container img{
+      height: 52px;
+      width: auto;
+      object-fit: contain;
+    }
+    .title-slide .brand-line{
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--csp-blue);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-left: 3px solid var(--csp-gold);
+      padding-left: 12px;
+    }
+    .title-slide .main-title{
+      font-size:42px;
+      line-height:1.05;
+      color: var(--csp-blue);
+      margin:12px 0 8px;
+      font-weight:900;
+      max-width:850px;
+    }
+    .title-slide .main-title .highlight{
+      color: var(--csp-teal);
+      border-bottom: 4px solid var(--csp-gold);
+      padding-bottom: 2px;
+    }
+    .title-slide .sub{
+      font-size:18px;
+      color: #3a4a5a;
+      max-width:780px;
+      line-height:1.5;
+      font-weight:400;
+    }
+    .pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:20px;
+    }
+    .pill{
+      background: var(--csp-white);
+      border: 1px solid #dce3ec;
+      border-radius:999px;
+      padding:8px 18px;
+      font-size:13px;
+      font-weight:700;
+      color: var(--csp-blue);
+      box-shadow: var(--csp-shadow);
+    }
+    .pill i{ color: var(--csp-gold); margin-right:6px; }
+
+    /* ===== RATIO BOX ===== */
+    .ratio-box{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:14px;
+      text-align:center;
+    }
+    .ratio-item{
+      background: var(--csp-white);
+      border: 1px solid #e2e8f0;
+      border-radius:14px;
+      padding:12px;
+      box-shadow: var(--csp-shadow);
+    }
+    .ratio-item .name{
+      font-size:10px;
+      color: #5a6a7a;
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+    .ratio-item .amt{
+      font-size:24px;
+      font-weight:900;
+      color: var(--csp-blue);
+    }
+
+    /* ===== SCROLL ===== */
+    .slide::-webkit-scrollbar { width: 5px; }
+    .slide::-webkit-scrollbar-track { background: transparent; }
+    .slide::-webkit-scrollbar-thumb { background: #c0cedc; border-radius: 8px; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px){
+      .slide{ padding: 20px 20px 56px; }
+      .grid-2, .split{ grid-template-columns: 1fr; }
+      .title-slide .main-title{ font-size: 32px; }
+      .title-slide .logo-container img{ height: 40px; }
+      .alert-list{ grid-template-columns: 1fr; }
+      .checklist{ grid-template-columns: 1fr; }
+    }
+    @media print{
+      body{overflow:visible;background:#fff}
+      .slide{ position:relative; display:block !important; page-break-after:always; width:100%; height:100vh; }
+      .nav,.slide-counter{display:none}
+    }
+  </style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- ===== SLIDE 1: PORTADA MEJORADA CON LOGO ===== -->
+  <section class="slide active title-slide">
+    <div class="topbar"></div>
+    <div class="logo-container">
+      <img src="https://csplifesciences.com/pe/wp-content/uploads/2022/07/logo-csp-peru.webp" alt="CSP Lifesciences Perú" />
+      <span class="brand-line">Revisión Financiera Ejecutiva</span>
+    </div>
+    <h1 class="main-title">
+      CSP Lifesciences Perú<br>
+      <span class="highlight">Estados Financieros</span> – Mayo 2026
+    </h1>
+    <div class="sub">
+      Presentación estratégica orientada a Gerencia General, Directorio e Inversionistas,
+      enfocada en rentabilidad, capital de trabajo, solvencia y principales focos de gestión.
+    </div>
+    <div class="pill-row">
+      <div class="pill"><i>📊</i> Ventas acumuladas: S/ 4.23 MM</div>
+      <div class="pill"><i>📈</i> Utilidad neta: S/ 1.08 MM</div>
+      <div class="pill"><i>🎯</i> Margen neto: 25.5%</div>
+      <div class="pill"><i>🏦</i> Activos totales: S/ 4.69 MM</div>
+    </div>
+    <div class="footer">
+      <span>CSP Lifesciences Perú</span>
+      <span>Mayo 2026</span>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 2: RESUMEN + DONUT ===== -->
+  <section class="slide">
+    <div class="topbar"></div>
+    <h2 class="title">1. Resumen Ejecutivo</h2>
+    <div class="subtitle">Mensaje principal y visión de rentabilidad acumulada</div>
+    <div class="hero" style="display:grid; grid-template-columns: 1.1fr .9fr; gap:20px; align-items:start;">
+      <div>
+        <div class="headline" style="font-size:26px; font-weight:800; color:var(--csp-blue); margin:6px 0 14px;">
+          CSP Lifesciences Perú cerró mayo 2026 con una <span style="color:var(--csp-teal);">utilidad neta acumulada de S/ 1.08 MM</span>
+          y un <span style="color:var(--csp-gold);">margen neto de 25.5%</span>, respaldado por un sólido nivel de ventas y una adecuada gestión operativa.
+        </div>
+        <div class="quote" style="background:var(--csp-gray); border-left:6px solid var(--csp-gold); border-radius:12px; padding:14px 18px; font-size:16px; line-height:1.5; color:var(--csp-dark);">
+          La compañía presenta una rentabilidad destacable para una operación en crecimiento,
+          manteniendo márgenes superiores al promedio del sector farmacéutico de distribución y comercialización.
+        </div>
+      </div>
+      <div class="card soft-gray">
+        <div class="section-title">Distribución de ingresos</div>
+        <div class="chart-container">
+          <canvas id="resumenDonut" width="300" height="200"></canvas>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:12px; padding:0 4px; margin-top:2px;">
+          <span><span style="display:inline-block; width:10px; height:10px; background:#008c8c; border-radius:4px;"></span> Utilidad Neta (25.5%)</span>
+          <span><span style="display:inline-block; width:10px; height:10px; background:#c9d4e0; border-radius:4px;"></span> Costos/Gastos</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Resumen Ejecutivo</span>
+      <span>CSP Lifesciences Perú | Mayo 2026</span>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 3: RESULTADOS + BARRAS ===== -->
+  <section class="slide">
+    <div class="topbar"></div>
+    <h2 class="title">2. Estado de Resultados – Generación de Valor</h2>
+    <div class="subtitle">Conversión eficiente de ventas en utilidad</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-title">Estructura de rentabilidad</div>
+        <table>
+          <thead><tr><th>Concepto</th><th style="text-align:right;">Monto</th></tr></thead>
+          <tbody>
+            <tr><td>Ventas</td><td class="num">S/ 4.23 MM</td></tr>
+            <tr><td>Costo de ventas</td><td class="num">S/ 1.67 MM</td></tr>
+            <tr><td>Utilidad Bruta</td><td class="num">S/ 2.56 MM</td></tr>
+            <tr><td>Gastos Operativos</td><td class="num">S/ 1.41 MM</td></tr>
+            <tr><td>Utilidad Operativa</td><td class="num">S/ 1.15 MM</td></tr>
+            <tr><td>Resultado Neto</td><td class="num">S/ 1.08 MM</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="card soft-blue">
+          <div class="section-title">Ventas</div>
+          <div class="metric-big">S/ 4.23 MM</div>
+          <div class="metric-note">Base de generación de valor con márgenes robustos.</div>
+        </div>
+        <div class="card" style="margin-top:12px;">
+          <div class="section-title">Margen sobre ventas</div>
+          <div class="chart-container-sm">
+            <canvas id="margenChart" width="300" height="120"></canvas>
+          </div>
+        </div>
+        <div class="card soft-gray" style="margin-top:12px; border-left:4px solid var(--csp-gold);">
+          <span style="font-weight:600;">Mensaje ejecutivo:</span> La empresa convierte ventas en ganancias de forma eficiente, con estructura de costos controlada.
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Estado de Resultados</span>
+      <span>CSP Lifesciences Perú | Mayo 2026</span>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 4: FORTALEZA COMERCIAL ===== -->
+  <section class="slide">
+    <div class="topbar"></div>
+    <h2 class="title">3. Fortaleza Comercial</h2>
+    <div class="subtitle">Crecimiento con cartera relevante por gestionar</div>
+    <div class="split">
+      <div class="card soft-teal">
+        <div class="section-title">Cuentas por cobrar comerciales</div>
+        <div class="metric-big">S/ 1.68 MM</div>
+        <div class="callout" style="font-size:18px;">≈ 40% de las ventas acumuladas</div>
+        <div class="chart-container-sm" style="margin-top:8px;">
+          <canvas id="carteraChart" width="300" height="100"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title">Interpretación</div>
+        <ul class="bullets">
+          <li>Expansión comercial</li>
+          <li>Crecimiento de colocaciones</li>
+          <li>Necesidad de vigilancia sobre cobranza</li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:14px;">
+      <div class="card soft-gold">
+        <div class="section-title">Riesgos a monitorear</div>
+        <ul class="bullets">
+          <li>Días de cobranza</li>
+          <li>Concentración de clientes</li>
+          <li>Capital de trabajo requerido</li>
+        </ul>
+      </div>
+      <div class="card soft-blue">
+        <div class="section-title">Mensaje ejecutivo</div>
+        <div class="callout" style="font-size:18px;">
+          El crecimiento comercial viene acompañado de una cartera significativa que debe gestionarse cuidadosamente para preservar la liquidez.
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Fortaleza Comercial</span>
+      <span>CSP Lifesciences Perú | Mayo 2026</span>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 5: CAPITAL DE TRABAJO ===== -->
+  <section class="slide">
+    <div class="topbar"></div>
+    <h2 class="title">4. Capital de Trabajo</h2>
+    <div class="subtitle">El motor operativo del crecimiento</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-title">Activos corrientes</div>
+        <table>
+          <thead><tr><th>Concepto</th><th style="text-align:right;">Valor</th></tr></thead>
+          <tbody>
+            <tr><td>Caja y Bancos</td><td class="num">S/ 420.8 mil</td></tr>
+            <tr><td>Cuentas por Cobrar</td><td class="num">S/ 1.68 MM</td></tr>
+            <tr><td>Inventarios</td><td class="num">S/ 1.69 MM</td></tr>
+            <tr><td>Anticipos y Créditos</td><td class="num">S/ 523.5 mil</td></tr>
+            <tr><td><strong>Total Activo Corriente</strong></td><td class="num"><strong>S/ 4.53 MM</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="card soft-blue">
+          <div class="section-title">Composición del activo corriente</div>
+          <div class="chart-container-sm">
+            <canvas id="ctaChart" width="300" height="130"></canvas>
+          </div>
+        </div>
+        <div class="card" style="margin-top:14px; border-top: 4px solid var(--csp-gold);">
+          <div class="section-title">Lectura ejecutiva</div>
+          <div class="metric-big" style="font-size:40px;">96%+</div>
+          <div class="metric-note">
+            El capital de trabajo representa más del 96% de los activos totales,
+            confirmando que la expansión del negocio depende directamente de una administración eficiente
+            de cartera, inventario y liquidez operativa.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Capital de Trabajo</span>
+      <span>CSP Lifesciences Perú | Mayo 2026</span>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 6: LIQUIDEZ Y SOLVENCIA ===== -->
+  <section class="slide">
+    <div class="topbar"></div>
+    <h2 class="title">5. Liquidez y Solvencia</h2>
+    <div class="subtitle">Crecimiento apoyado en financiamiento operativo</div>
+    <div class="ratio-box">
+      <div class="ratio-item"><div class="name">Activos Totales</div><div class="amt">S/ 4.69 MM</div></div>
+      <div class="ratio-item"><div class="name">Pasivos Totales</div><div class="amt">S/ 3.62 MM</div></div>
+      <div class="ratio-item"><div class="name">Patrimonio</div><div class="amt">S/ 1.07 MM</div></div>
+    </div>
+    <div class="grid-2" style="margin-top:18px; align-items:center;">
+      <div class="card">
+        <div class="section-title">Ratio Patrimonio / Activos</div>
+        <div class="metric-big">≈ 23%</div>
+        <div class="metric-note">
+          La empresa aún se apalanca principalmente en pasivos operativos y obligaciones comerciales,
+          mientras fortalece su base patrimonial mediante la acumulación de resultados.
+        </div>
+      </div>
+      <div class="card" style="display:flex; justify-content:center; align-items:center; flex-direction:column;">
+        <div class="chart-container-sm" style="width:150px; height:150px;">
+          <canvas id="donutPatrimonio" width="200" height="200"></canvas>
+        </div>
+        <span style="font-size:12px; font-weight:700; color:#5a6a7a;">Patrimonio / Activos</span>
+      </div>
+    </div>
+    <div class="card soft-gold" style="margin-top:16px; border-left:6px solid var(--csp-gold);">
+      <div class="section-title">Mensaje ejecutivo</div>
+      <div class="callout" style="font-size:19px;">
+        La compañía financia su crecimiento principalmente mediante obligaciones comerciales y financiamiento operativo,
+        mientras fortalece progresivamente su patrimonio mediante la generación de utilidades.
+      </div>
+    </div>
+    <div class="footer">
+      <span>Liquidez y Solvencia</span>
+      <span>CSP Lifesciences Perú | Mayo 2026</span>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 7: INVENTARIOS ===== -->
+  <section class="slide">
+    <div class="topbar"></div>
+    <h2 class="title">6. Inventarios: Motor del Negocio</h2>
+    <div class="subtitle">Activo operativo clave para sostener la demanda</div>
+    <div class="split">
+      <div class="card soft-teal">
+        <div class="section-title">Inventario al cierre</div>
+        <div class="metric-big">S/ 1.69 MM</div>
+        <div class="callout" style="font-size:18px;">36% de los activos totales</div>
+        <div class="chart-container-sm" style="margin-top:8px;">
+          <canvas id="inventarioBar" width="300" height="80"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title">Lectura estratégica</div>
+        <ul class="bullets">
+          <li>Principal activo operativo</li>
+          <li>Fuente de disponibilidad comercial</li>
+          <li>Palanca para sostener crecimiento</li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:14px;">
+      <div class="card soft-gold">
+        <div class="section-title">Riesgos</div>
+        <ul class="bullets">
+          <li>Obsolescencia</li>
+          <li>Vencimientos</li>
+          <li>Sobre stock</li>
+        </ul>
+      </div>
+      <div class="card" style="border-left:6px solid var(--csp-teal);">
+        <div class="section-title">Oportunidad</div>
+        <div class="callout" style="font-size:20px;">Optimización de rotación y compras</div>
+        <div class="metric-note" style="margin-top:4px;">Una gestión más fina del inventario puede liberar caja, reducir riesgos y elevar aún más el retorno operativo.</div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Inventarios</span>
+      <span>CSP Lifesciences Perú | Mayo 2026</span>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 8: OBLIGACIONES ===== -->
+  <section class="slide">
+    <div class="topbar"></div>
+    <h2 class="title">7. Estructura de Obligaciones</h2>
+    <div class="subtitle">Apalancamiento con soporte corporativo</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-title">Pasivos corrientes</div>
+        <div class="metric-big">S/ 3.60 MM</div>
+        <table style="margin-top:8px;">
+          <thead><tr><th>Concepto</th><th style="text-align:right;">Valor</th></tr></thead>
+          <tbody>
+            <tr><td>Cuentas por pagar relacionadas</td><td class="num">S/ 3.15 MM</td></tr>
+            <tr><td>Proveedores terceros</td><td class="num">S/ 204 mil</td></tr>
+            <tr><td>Tributos por pagar</td><td class="num">S/ 68 mil</td></tr>
+            <tr><td>Remuneraciones por pagar</td><td class="num">S/ 173 mil</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="card soft-blue">
+          <div class="section-title">Composición de pasivos corrientes</div>
+          <div class="chart-container-sm">
+            <canvas id="pasivosChart" width="300" height="130"></canvas>
+          </div>
+        </div>
+        <div class="card soft-teal" style="margin-top:14px; border-left:6px solid var(--csp-teal);">
+          <div class="section-title">Mensaje ejecutivo</div>
+          <div class="metric-note" style="font-size:15px; line-height:1.5;">
+            La compañía posee una ventaja financiera importante al apalancarse en soporte corporativo
+            y relaciones estratégicas del grupo.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Estructura de Obligaciones</span>
+      <span>CSP Lifesciences Perú | Mayo 2026</span>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 9: ROE ===== -->
+  <section class="slide">
+    <div class="topbar"></div>
+    <h2 class="title">8. Rentabilidad del Patrimonio</h2>
+    <div class="subtitle">Retorno excepcional sobre la inversión accionaria</div>
+    <div class="grid-3">
+      <div class="kpi green"><div class="label">Utilidad Neta</div><div class="value">S/ 1.08 MM</div></div>
+      <div class="kpi blue"><div class="label">Patrimonio</div><div class="value">S/ 1.07 MM</div></div>
+      <div class="kpi gold"><div class="label">ROE Aproximado</div><div class="value">100.8%</div></div>
+    </div>
+    <div class="grid-2" style="margin-top:18px;">
+      <div class="card soft-gold">
+        <div class="section-title">Interpretación</div>
+        <div class="callout" style="font-size:19px;">
+          Por cada <strong style="color:var(--csp-blue);">S/1 invertido por los accionistas</strong>,
+          se han generado aproximadamente <strong style="color:var(--csp-teal);">S/1.01 de utilidad acumulada</strong>.
+        </div>
+      </div>
+      <div class="card" style="display:flex; justify-content:center; align-items:center; flex-direction:column;">
+        <div class="chart-container-sm" style="width:180px; height:140px;">
+          <canvas id="roeChart" width="300" height="180"></canvas>
+        </div>
+        <span style="font-size:12px; font-weight:700; color:#5a6a7a;">ROE vs Promedio Sector</span>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Rentabilidad del Patrimonio</span>
+      <span>CSP Lifesciences Perú | Mayo 2026</span>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 10: ALERTAS ===== -->
+  <section class="slide">
+    <div class="topbar"></div>
+    <h2 class="title">9. Principales Alertas de Gestión</h2>
+    <div class="subtitle">Focos prioritarios para el segundo semestre</div>
+    <div class="alert-list">
+      <div class="alert orange"><h4>1. Cartera Comercial</h4><p><strong>S/ 1.68 MM</strong> pendientes de cobro.<br><br><strong>Acción:</strong> fortalecer seguimiento de cobranza.</p></div>
+      <div class="alert red"><h4>2. Concentración de Inventario</h4><p><strong>S/ 1.69 MM</strong> en stock.<br><br><strong>Acción:</strong> monitorear rotación y vencimientos.</p></div>
+      <div class="alert blue"><h4>3. Dependencia de Financiamiento Relacionado</h4><p><strong>S/ 3.15 MM</strong>.<br><br><strong>Acción:</strong> diversificar fuentes de financiamiento.</p></div>
+      <div class="alert teal"><h4>4. Costos Financieros</h4><p>Gastos financieros de <strong>S/ 202.8 mil</strong>.<br><br><strong>Acción:</strong> optimizar estructura financiera.</p></div>
+    </div>
+    <div class="footer">
+      <span>Alertas de Gestión</span>
+      <span>CSP Lifesciences Perú | Mayo 2026</span>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 11: CONCLUSIONES ===== -->
+  <section class="slide">
+    <div class="topbar"></div>
+    <h2 class="title">10. Conclusiones para Directorio</h2>
+    <div class="subtitle">Síntesis ejecutiva y mensaje de cierre</div>
+    <ul class="checklist">
+      <li>Ventas acumuladas superiores a S/ 4.2 MM</li>
+      <li>Margen bruto de 60.5%</li>
+      <li>Utilidad neta superior a S/ 1 MM</li>
+      <li>Margen neto de 25.5%</li>
+      <li>Patrimonio fortalecido por resultados</li>
+      <li>Inventario suficiente para sostener crecimiento</li>
+      <li>Liquidez operativa adecuada</li>
+    </ul>
+    <div class="card soft-blue" style="margin-top:20px; border-left:8px solid var(--csp-gold);">
+      <div class="section-title">Mensaje de cierre</div>
+      <div class="callout" style="font-size:20px; line-height:1.5;">
+        CSP Lifesciences Perú presenta al cierre de mayo 2026 una posición financiera sólida,
+        con crecimiento rentable, márgenes robustos y capacidad para seguir expandiendo sus operaciones.
+        El principal foco de gestión para el segundo semestre debe centrarse en optimizar la cobranza,
+        acelerar la rotación de inventarios y reducir gradualmente la dependencia de financiamiento relacionado.
+      </div>
+    </div>
+    <div class="footer">
+      <span>Conclusiones</span>
+      <span>CSP Lifesciences Perú | Mayo 2026</span>
+    </div>
+  </section>
+
+  <!-- ===== CONTROLES ===== -->
+  <div class="slide-counter" id="counter">1 / 11</div>
+  <div class="nav">
+    <button onclick="prevSlide()">← Anterior</button>
+    <button onclick="nextSlide()">Siguiente →</button>
+  </div>
+</div>
+
+<script>
+  // ========== NAVEGACIÓN ==========
+  const slides = document.querySelectorAll('.slide');
+  const counter = document.getElementById('counter');
+  let current = 0;
+
+  function updateSlides(){
+    slides.forEach((s,i)=>s.classList.toggle('active', i === current));
+    counter.textContent = `${current + 1} / ${slides.length}`;
+  }
+  window.nextSlide = function(){
+    if(current < slides.length - 1){ current++; updateSlides(); }
+  }
+  window.prevSlide = function(){
+    if(current > 0){ current--; updateSlides(); }
+  }
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' '){ e.preventDefault(); nextSlide(); }
+    if(e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); prevSlide(); }
+    if(e.key.toLowerCase() === 'home'){ current = 0; updateSlides(); }
+    if(e.key.toLowerCase() === 'end'){ current = slides.length - 1; updateSlides(); }
+  });
+
+  // ========== GRÁFICOS (colores corporativos) ==========
+  const blue = '#0b2b5c', lightBlue = '#2b6a9e', teal = '#008c8c', gold = '#c9a84c', gray = '#d1d9e6';
+
+  // 1. Donut resumen
+  new Chart(document.getElementById('resumenDonut'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Utilidad Neta', 'Costos y Gastos'],
+      datasets: [{ data: [25.5, 74.5], backgroundColor: [teal, '#d1d9e6'], borderWidth: 0 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '70%' }
+  });
+
+  // 2. Barras márgenes
+  new Chart(document.getElementById('margenChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Margen Bruto', 'Margen Operativo', 'Margen Neto'],
+      datasets: [{ label: '%', data: [60.5, 27.2, 25.5], backgroundColor: [teal, '#4aa3a3', gold], borderRadius: 6, barThickness: 24 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { max: 70, grid: { display: false } }, y: { grid: { display: false } } } }
+  });
+
+  // 3. Cartera
+  new Chart(document.getElementById('carteraChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Cartera', 'Ventas'],
+      datasets: [{ label: 'S/ MM', data: [1.68, 4.23], backgroundColor: [gold, lightBlue], borderRadius: 6, barThickness: 34 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } } }
+  });
+
+  // 4. Capital de trabajo
+  new Chart(document.getElementById('ctaChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Caja', 'Ctas x Cobrar', 'Inventarios', 'Anticipos'],
+      datasets: [{ data: [420.8, 1680, 1690, 523.5], backgroundColor: [lightBlue, gold, teal, '#a0b8cc'], borderWidth: 0 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 9 } } } }, cutout: '60%' }
+  });
+
+  // 5. Donut patrimonio
+  new Chart(document.getElementById('donutPatrimonio'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Patrimonio', 'Pasivos'],
+      datasets: [{ data: [23, 77], backgroundColor: [teal, '#d1d9e6'], borderWidth: 0 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '75%' }
+  });
+
+  // 6. Inventario barra
+  new Chart(document.getElementById('inventarioBar'), {
+    type: 'bar',
+    data: {
+      labels: ['Inventario'],
+      datasets: [{ label: 'S/ MM', data: [1.69], backgroundColor: teal, borderRadius: 8, barThickness: 32 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { display: false } }, x: { beginAtZero: true, grid: { display: false }, max: 2.0 } } }
+  });
+
+  // 7. Pasivos
+  new Chart(document.getElementById('pasivosChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Ctas Relacionadas', 'Proveedores', 'Tributos', 'Remuneraciones'],
+      datasets: [{ data: [3.15, 0.204, 0.068, 0.173], backgroundColor: [lightBlue, gold, '#b42318', '#a0b8cc'], borderWidth: 0 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 9 } } } }, cutout: '60%' }
+  });
+
+  // 8. ROE
+  new Chart(document.getElementById('roeChart'), {
+    type: 'bar',
+    data: {
+      labels: ['CSP', 'Sector Promedio'],
+      datasets: [{ label: 'ROE %', data: [100.8, 18.5], backgroundColor: [gold, '#a0b8cc'], borderRadius: 6, barThickness: 36 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } } }
+  });
+
+  updateSlides();
+</script>
+</body>
+</html>
