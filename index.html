@@ -4,29 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CSP Lifesciences Perú | Revisión Financiera Ejecutiva | Mayo 2026</title>
-  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
-    /* ===== VARIABLES CORPORATIVAS (basadas en logo CSP) ===== */
+    /* ========================================================
+       VARIABLES CORPORATIVAS
+    ======================================================== */
     :root{
-      --csp-blue: #0b2b5c;       /* azul oscuro del logo */
-      --csp-lightblue: #2b6a9e;  /* azul medio */
-      --csp-teal: #008c8c;       /* verde/teal secundario */
-      --csp-gold: #c9a84c;       /* dorado para acentos */
-      --csp-gray: #f0f2f5;       /* fondo gris claro */
-      --csp-white: #ffffff;
-      --csp-dark: #1a1a2e;
-      --csp-shadow: 0 10px 30px rgba(11, 43, 92, 0.15);
-      --csp-radius: 16px;
+      --csp-primary: #1569A9;
+      --csp-secondary: #01B7CE;
+      --csp-primary-dark: #0E4A77;
+      --csp-secondary-light: #E0F7FA;
+      --csp-primary-light: #E8F1F8;
+      --csp-white: #FFFFFF;
+      --csp-black: #1A1A1A;
+      --csp-gray: #F4F6F9;
+      --csp-gray-dark: #6B7A8A;
+      --csp-shadow: 0 6px 24px rgba(21, 105, 169, 0.12);
+      --csp-radius: 14px;
     }
 
-    *{box-sizing:border-box; margin:0; padding:0;}
+    *{ box-sizing:border-box; margin:0; padding:0; }
     html,body{
       margin:0;
       padding:0;
       background: var(--csp-gray);
-      font-family: "Segoe UI", Arial, sans-serif;
-      color: var(--csp-dark);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--csp-black);
       overflow:hidden;
       height:100%;
     }
@@ -38,176 +41,376 @@
       background: var(--csp-gray);
     }
 
+    /* ===== CADA SLIDE ===== */
     .slide{
       display:none;
       width:100vw;
       height:100vh;
-      padding:28px 36px 60px;
+      padding: 12px 24px 36px;
       background: var(--csp-white);
       position:absolute;
       inset:0;
-      overflow-y:auto;
-      scrollbar-width: thin;
-      box-shadow: inset 0 0 0 1px rgba(11,43,92,0.04);
+      overflow:hidden;
     }
+    .slide.active{ display:flex; flex-direction:column; }
 
-    .slide.active{display:block}
-
-    /* ===== TOPBAR CON GRADIENTE CORPORATIVO ===== */
+    /* ===== BARRA SUPERIOR ===== */
     .topbar{
-      height:6px;
-      width:100%;
-      background: linear-gradient(90deg, var(--csp-blue), var(--csp-teal), var(--csp-gold));
+      height: 8px;
+      width: 100%;
+      background: linear-gradient(90deg, var(--csp-primary), var(--csp-secondary));
       border-radius: 999px;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
+      flex-shrink: 0;
     }
 
     /* ===== TIPOGRAFÍA ===== */
     .title{
-      font-size:30px;
-      line-height:1.2;
-      font-weight:800;
-      color: var(--csp-blue);
-      margin:0 0 4px 0;
-      letter-spacing: -0.3px;
+      font-size: 46px;
+      line-height: 1.1;
+      font-weight: 800;
+      color: var(--csp-primary);
+      margin: 0 0 2px 0;
+      flex-shrink: 0;
     }
+    .title i { color: var(--csp-secondary); font-style: normal; }
 
     .subtitle{
-      font-size:14px;
-      color: #5a6a7a;
-      margin-bottom:18px;
-      font-weight: 500;
-      border-bottom: 2px solid var(--csp-gold);
-      padding-bottom: 6px;
+      font-size: 22px;
+      color: var(--csp-gray-dark);
+      margin-bottom: 10px;
+      font-weight: 600;
+      border-bottom: 3px solid var(--csp-secondary);
+      padding-bottom: 5px;
       display: inline-block;
+      flex-shrink: 0;
+    }
+
+/* ========================================================
+   FORZAR TODAS LAS TRADUCCIONES EN INGLÉS A NEGRO, GRANDE, NEGRITA Y CON FONDO PLOMO
+   ======================================================== */
+.en {
+  color: #000000 !important;
+  opacity: 1 !important;
+  font-weight: 700 !important;
+  font-size: 0.75em !important;
+  background-color: #E8ECF0 !important;
+  padding: 1px 6px !important;
+  border-radius: 4px !important;
+  display: inline-block !important;
+}
+    .title .en{
+      font-size: 0.35em;
+      font-weight: 400;
+      color: var(--csp-gray-dark);
+      display: block;
+      opacity: 0.6;
+      margin-top: 2px;
+    }
+    .subtitle .en{
+      font-size: 0.6em;
+      display: inline;
+      opacity: 0.6;
+      margin-left: 0;
+      border-bottom: none;
+    }
+    .pill .en{
+      font-size: 0.45em;
+      display: inline;
+      opacity: 0.5;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .section-title .en{
+      font-size: 0.45em;
+      display: inline;
+      opacity: 0.5;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .metric-note .en{
+      font-size: 0.65em;
+      display: inline;
+      opacity: 0.5;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .bullets li .en{
+      font-size: 0.55em;
+      display: inline;
+      opacity: 0.5;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .callout .en{
+      font-size: 0.45em;
+      display: block;
+      opacity: 0.5;
+      font-weight: 400;
+      margin-top: 2px;
+    }
+    .alert h4 .en{
+      font-size: 0.45em;
+      display: inline;
+      opacity: 0.5;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .alert p .en{
+      font-size: 0.55em;
+      display: inline;
+      opacity: 0.5;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .checklist li .en{
+      font-size: 0.45em;
+      display: inline;
+      opacity: 0.5;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .footer .en{
+      font-size: 0.65em;
+      display: inline;
+      opacity: 0.5;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .brand-line .en{
+      font-size: 0.45em;
+      display: inline;
+      opacity: 0.5;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .sub .en{
+      font-size: 0.55em;
+      display: inline;
+      opacity: 0.5;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .ratio-item .name .en{
+      font-size: 0.45em;
+      display: inline;
+      opacity: 0.5;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .inventario-item .categoria .en{
+      font-size: 0.45em;
+      display: inline;
+      opacity: 0.5;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .alert-list .en{
+      font-size: 0.55em;
+      display: inline;
+      opacity: 0.5;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    td .en{
+      font-size: 0.45em;
+      display: inline;
+      opacity: 0.4;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .kpi .label .en{
+      font-size: 0.45em;
+      display: inline;
+      opacity: 0.5;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .metric-big .en{
+      font-size: 0.3em;
+      display: block;
+      opacity: 0.4;
+      font-weight: 400;
+      margin-top: 2px;
+    }
+    .ratio-item .amt .en{
+      font-size: 0.35em;
+      display: inline;
+      opacity: 0.4;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .inventario-item .porcentaje .en{
+      font-size: 0.35em;
+      display: inline;
+      opacity: 0.4;
+      font-weight: 400;
+      margin-left: 0;
+    }
+    .inventario-item .monto .en{
+      font-size: 0.5em;
+      display: inline;
+      opacity: 0.4;
+      font-weight: 400;
+      margin-left: 0;
+    }
+
+    /* ===== CONTENEDOR PRINCIPAL ===== */
+    .slide-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 0;
     }
 
     /* ===== TARJETAS ===== */
     .card{
       background: var(--csp-white);
-      border: 1px solid #e2e8f0;
+      border: 1px solid #E2E8F0;
       border-radius: var(--csp-radius);
       box-shadow: var(--csp-shadow);
-      padding:14px 16px;
-      transition: transform 0.1s ease;
+      padding: 20px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
-
-    .card.soft-blue{ background: #e8f0fe; border-color: #b8d0e8; }
-    .card.soft-teal{ background: #e6f5f5; border-color: #b3dfdf; }
-    .card.soft-gold{ background: #fcf6e8; border-color: #f0e0b8; }
-    .card.soft-gray{ background: #f8f9fa; border-color: #dee2e6; }
+    .card-primary-light { background: var(--csp-primary-light); border-color: #C5D9E8; }
+    .card-secondary-light { background: var(--csp-secondary-light); border-color: #B2E6ED; }
+    .card-gray-light { background: var(--csp-gray); border-color: #DDE2E7; }
 
     .section-title{
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
-      color: #5a6a7a;
-      font-weight:700;
-      margin-bottom:8px;
+      font-size: 17px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--csp-gray-dark);
+      font-weight: 700;
+      margin-bottom: 6px;
+      flex-shrink: 0;
     }
 
-    /* ===== GRIDS ===== */
-    .grid-2{ display:grid; grid-template-columns: 1.1fr .9fr; gap:18px; }
-    .grid-3{ display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
-    .split{ display:grid; grid-template-columns: 1fr 1fr; gap:18px; }
+    /* ===== GRIDS Y FLEX ===== */
+    .grid-2{ display:grid; grid-template-columns: 1.2fr .8fr; gap: 14px; flex: 1; }
+    .grid-3{ display:grid; grid-template-columns: repeat(3,1fr); gap: 14px; flex: 1; }
+    .split{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; flex: 1; }
+
+    .flex-row { display: flex; gap: 14px; flex: 1; min-height: 0; }
+    .flex-col { display: flex; flex-direction: column; gap: 12px; flex: 1; min-height: 0; }
+    .flex-1 { flex: 1; }
+    .flex-2 { flex: 2; }
 
     /* ===== KPI ===== */
     .kpi{
       background: var(--csp-white);
-      border: 1px solid #e2e8f0;
+      border: 1px solid #E2E8F0;
       border-radius: 14px;
-      padding:10px 12px;
+      padding: 18px 20px;
       box-shadow: var(--csp-shadow);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
     .kpi .label{
-      font-size:10px;
-      color: #5a6a7a;
-      font-weight:700;
-      margin-bottom:4px;
-      text-transform:uppercase;
-      letter-spacing:0.05em;
+      font-size: 18px;
+      color: var(--csp-gray-dark);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
     .kpi .value{
-      font-size:22px;
-      font-weight:800;
-      color: var(--csp-blue);
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--csp-primary);
     }
-    .kpi.green .value{ color: var(--csp-teal); }
-    .kpi.gold .value{ color: var(--csp-gold); }
-    .kpi.blue .value{ color: var(--csp-lightblue); }
+    .kpi.primary .value{ color: var(--csp-primary); }
+    .kpi.secondary .value{ color: var(--csp-secondary); }
+    .kpi.dark .value{ color: var(--csp-black); }
 
     /* ===== TABLAS ===== */
     table{
       width:100%;
       border-collapse:collapse;
-      font-size:13px;
+      font-size: 20px;
     }
     th{
-      background: var(--csp-blue);
+      background: var(--csp-primary);
       color: white;
-      padding:8px 10px;
+      padding: 9px 18px;
       text-align:left;
-      font-size:11px;
-      font-weight:600;
+      font-size: 18px;
+      font-weight: 600;
     }
     td{
-      padding:8px 10px;
-      border-bottom:1px solid #edf2f7;
+      padding: 9px 18px;
+      border-bottom:1px solid #EDF2F7;
       background: white;
+      font-size: 20px;
     }
-    tr:nth-child(even) td{ background: #f9fafb; }
-    td.num{ text-align:right; font-weight:700; }
+    tr:nth-child(even) td{ background: #FAFBFC; }
+    td.num{ text-align:right; font-weight:700; color: var(--csp-black); }
+    .sector-privado { color: var(--csp-primary); font-weight:700; }
+    .sector-publico { color: var(--csp-secondary); font-weight:700; }
 
     /* ===== LISTAS ===== */
     .bullets{
       margin:0;
-      padding-left:18px;
-      line-height:1.6;
-      font-size:15px;
+      padding-left: 26px;
+      line-height: 2.0;
+      font-size: 22px;
     }
-    .bullets li{ margin:2px 0; }
+    .bullets li{ margin: 5px 0; }
+    .bullets li strong { color: var(--csp-primary); }
 
     .metric-big{
-      font-size:36px;
-      font-weight:900;
-      color: var(--csp-blue);
-      line-height:1;
-      margin:2px 0 6px;
+      font-size: 58px;
+      font-weight: 900;
+      color: var(--csp-primary);
+      line-height: 1;
+      margin: 0 0 4px;
     }
     .metric-note{
-      font-size:13px;
-      color: #4a5a6a;
-      line-height:1.5;
+      font-size: 20px;
+      color: var(--csp-gray-dark);
+      line-height: 1.4;
     }
     .callout{
-      font-size:20px;
-      font-weight:800;
-      line-height:1.3;
-      color: var(--csp-blue);
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.3;
+      color: var(--csp-primary);
     }
+    .callout i { color: var(--csp-secondary); font-style: normal; }
 
     /* ===== CHART CONTAINERS ===== */
-    .chart-container { position: relative; height: 150px; width: 100%; margin: 4px 0; }
-    .chart-container-sm { height: 120px; width: 100%; }
+    .chart-container { position: relative; height: 210px; width: 100%; flex-shrink: 0; }
+    .chart-container-sm { position: relative; height: 170px; width: 100%; flex-shrink: 0; }
 
     /* ===== ALERTAS ===== */
     .alert-list{
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap:16px;
+      gap: 14px;
+      flex: 1;
     }
     .alert{
-      border-radius:14px;
-      padding:14px 16px;
+      border-radius: 14px;
+      padding: 20px 24px;
       box-shadow: var(--csp-shadow);
       border-left: 6px solid transparent;
+      background: var(--csp-white);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
-    .alert h4{ margin:0 0 4px; font-size:16px; color: var(--csp-blue); }
-    .alert p{ margin:0; line-height:1.5; font-size:14px; }
-    .alert.orange{ background:#fcf6e8; border-left-color: var(--csp-gold); }
-    .alert.red{ background:#fdecec; border-left-color: #b42318; }
-    .alert.blue{ background:#e8f0fe; border-left-color: var(--csp-lightblue); }
-    .alert.teal{ background:#e6f5f5; border-left-color: var(--csp-teal); }
+    .alert h4{ margin:0 0 6px; font-size: 26px; color: var(--csp-primary); }
+    .alert p{ margin:0; line-height:1.5; font-size: 21px; color: var(--csp-black); }
+    .alert.orange{ border-left-color: #F5A623; background: #FFF8EE; }
+    .alert.red{ border-left-color: #D32F2F; background: #FDF0F0; }
+    .alert.blue{ border-left-color: var(--csp-primary); background: var(--csp-primary-light); }
+    .alert.teal{ border-left-color: var(--csp-secondary); background: var(--csp-secondary-light); }
 
     /* ===== CHECKLIST ===== */
     .checklist{
@@ -215,593 +418,694 @@
       padding:0;
       margin:0;
       display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px 16px;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px 24px;
+      flex: 1;
+      align-content: center;
     }
     .checklist li{
       background: var(--csp-white);
-      border: 1px solid #e2e8f0;
-      border-radius: 14px;
-      padding:12px 14px;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 18px 22px;
       box-shadow: var(--csp-shadow);
-      font-size:14px;
-      font-weight:600;
-      color: var(--csp-blue);
-    }
-    .checklist li::before{
-      content: "✓ ";
-      color: var(--csp-teal);
-      font-weight:900;
-    }
-
-    /* ===== FOOTER ===== */
-    .footer{
-      position:absolute;
-      bottom:12px;
-      left:36px;
-      right:36px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      font-size:11px;
-      color: #5a6a7a;
-      border-top: 1px solid rgba(0,0,0,0.05);
-      padding-top: 8px;
-    }
-
-    /* ===== NAVEGACIÓN ===== */
-    .nav{
-      position:fixed;
-      right:20px;
-      bottom:20px;
-      display:flex;
-      gap:8px;
-      z-index:20;
-    }
-    .nav button{
-      border: none;
-      background: var(--csp-blue);
-      color: white;
-      padding:8px 14px;
-      border-radius:10px;
-      font-weight:700;
-      cursor:pointer;
-      box-shadow: var(--csp-shadow);
-      transition: all 0.15s;
-      font-size:13px;
-    }
-    .nav button:hover{ background: var(--csp-lightblue); transform: scale(1.02); }
-
-    .slide-counter{
-      position:fixed;
-      left:20px;
-      bottom:20px;
-      background: var(--csp-blue);
-      color: #fff;
-      padding:6px 12px;
-      border-radius:10px;
-      font-weight:700;
-      z-index:20;
-      box-shadow: var(--csp-shadow);
-      font-size:13px;
-      letter-spacing:0.3px;
-    }
-
-    /* ===== PORTADA MEJORADA ===== */
-    .title-slide{
-      background: linear-gradient(145deg, #ffffff 0%, #f5f8fc 100%);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .title-slide .logo-container{
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--csp-black);
       display: flex;
       align-items: center;
       gap: 16px;
-      margin-bottom: 12px;
     }
-    .title-slide .logo-container img{
-      height: 52px;
-      width: auto;
-      object-fit: contain;
+    .checklist li::before{
+      content: "✓";
+      color: var(--csp-secondary);
+      font-weight: 900;
+      font-size: 30px;
+      background: var(--csp-secondary-light);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
-    .title-slide .brand-line{
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--csp-blue);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      border-left: 3px solid var(--csp-gold);
-      padding-left: 12px;
-    }
-    .title-slide .main-title{
-      font-size:42px;
-      line-height:1.05;
-      color: var(--csp-blue);
-      margin:12px 0 8px;
-      font-weight:900;
-      max-width:850px;
-    }
-    .title-slide .main-title .highlight{
-      color: var(--csp-teal);
-      border-bottom: 4px solid var(--csp-gold);
-      padding-bottom: 2px;
-    }
-    .title-slide .sub{
-      font-size:18px;
-      color: #3a4a5a;
-      max-width:780px;
-      line-height:1.5;
-      font-weight:400;
-    }
-    .pill-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:20px;
-    }
-    .pill{
-      background: var(--csp-white);
-      border: 1px solid #dce3ec;
-      border-radius:999px;
-      padding:8px 18px;
-      font-size:13px;
-      font-weight:700;
-      color: var(--csp-blue);
-      box-shadow: var(--csp-shadow);
-    }
-    .pill i{ color: var(--csp-gold); margin-right:6px; }
 
     /* ===== RATIO BOX ===== */
     .ratio-box{
       display:grid;
       grid-template-columns: repeat(3,1fr);
-      gap:14px;
+      gap: 14px;
       text-align:center;
+      flex-shrink: 0;
     }
     .ratio-item{
       background: var(--csp-white);
-      border: 1px solid #e2e8f0;
+      border: 1px solid #E2E8F0;
       border-radius:14px;
-      padding:12px;
+      padding: 20px;
       box-shadow: var(--csp-shadow);
     }
     .ratio-item .name{
-      font-size:10px;
-      color: #5a6a7a;
+      font-size: 18px;
+      color: var(--csp-gray-dark);
       text-transform:uppercase;
       letter-spacing:0.06em;
       font-weight:700;
       margin-bottom:4px;
     }
     .ratio-item .amt{
-      font-size:24px;
+      font-size: 44px;
       font-weight:900;
-      color: var(--csp-blue);
+      color: var(--csp-primary);
     }
 
-    /* ===== SCROLL ===== */
-    .slide::-webkit-scrollbar { width: 5px; }
-    .slide::-webkit-scrollbar-track { background: transparent; }
-    .slide::-webkit-scrollbar-thumb { background: #c0cedc; border-radius: 8px; }
+    /* ===== INVENTARIO CLASIFICACIÓN ===== */
+    .inventario-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .inventario-item{
+      border-radius: 14px;
+      padding: 12px 16px;
+      text-align: center;
+      box-shadow: var(--csp-shadow);
+      border: 1px solid #E2E8F0;
+      background: var(--csp-white);
+    }
+    .inventario-item .porcentaje{
+      font-size: 32px;
+      font-weight: 900;
+    }
+    .inventario-item .categoria{
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--csp-black);
+    }
+    .inventario-item .monto{
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--csp-gray-dark);
+    }
+    .inventario-item.verde .porcentaje{ color: #22C55E; }
+    .inventario-item.verde { border-top: 6px solid #22C55E; }
+    .inventario-item.amarillo .porcentaje{ color: #EAB308; }
+    .inventario-item.amarillo { border-top: 6px solid #EAB308; }
+    .inventario-item.rojo .porcentaje{ color: #EF4444; }
+    .inventario-item.rojo { border-top: 6px solid #EF4444; }
+
+    /* ===== FOOTER ===== */
+    .footer{
+      flex-shrink: 0;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size: 15px;
+      color: var(--csp-gray-dark);
+      border-top: 1px solid rgba(0,0,0,0.05);
+      padding-top: 8px;
+      margin-top: 10px;
+    }
+    .footer .brand { color: var(--csp-primary); font-weight: 700; }
+
+    /* ===== PORTADA ===== */
+    .title-slide{
+      background: linear-gradient(145deg, #ffffff 0%, var(--csp-primary-light) 100%);
+      justify-content: center;
+      padding: 20px 40px 30px;
+    }
+    .title-slide .logo-container{
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      margin-bottom: 18px;
+    }
+    .title-slide .logo-container img{
+      height: 90px;
+      width: auto;
+      object-fit: contain;
+    }
+    .title-slide .brand-line{
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--csp-primary);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-left: 4px solid var(--csp-secondary);
+      padding-left: 20px;
+    }
+    .title-slide .main-title{
+      font-size: 74px;
+      line-height: 1.05;
+      color: var(--csp-primary);
+      margin: 14px 0 10px;
+      font-weight: 900;
+      max-width: 850px;
+    }
+    .title-slide .main-title .highlight{
+      color: var(--csp-secondary);
+    }
+    .title-slide .sub{
+      font-size: 28px;
+      color: #3A4A5A;
+      max-width: 780px;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+    .pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .pill{
+      background: var(--csp-white);
+      border: 1px solid #DCE3EC;
+      border-radius: 999px;
+      padding: 10px 30px;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--csp-primary);
+      box-shadow: var(--csp-shadow);
+    }
+    .pill i{ color: var(--csp-secondary); margin-right: 8px; }
+
+    /* ===== NAVEGACIÓN SUPERIOR ===== */
+    .nav-top {
+      position: fixed;
+      top: 14px;
+      right: 22px;
+      display: flex;
+      gap: 8px;
+      z-index: 20;
+      background: rgba(255,255,255,0.95);
+      padding: 8px 14px;
+      border-radius: 12px;
+      box-shadow: var(--csp-shadow);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .nav-top button{
+      border: none;
+      background: var(--csp-primary);
+      color: white;
+      padding: 8px 22px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-size: 20px;
+      font-family: inherit;
+    }
+    .nav-top button:hover{ background: var(--csp-primary-dark); transform: scale(1.03); }
+    .nav-top .counter {
+      color: var(--csp-primary);
+      font-weight: 700;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      border-right: 1px solid #E2E8F0;
+      margin-right: 6px;
+    }
 
     /* ===== RESPONSIVE ===== */
-    @media (max-width: 900px){
-      .slide{ padding: 20px 20px 56px; }
-      .grid-2, .split{ grid-template-columns: 1fr; }
+    @media (max-width: 1400px){
+      .slide{ padding: 12px 20px 32px; }
+      .title{ font-size: 38px; }
+      .title-slide .main-title{ font-size: 52px; }
+      .title-slide .logo-container img{ height: 70px; }
+      .grid-2, .split, .grid-3{ grid-template-columns: 1fr; }
+      .flex-row { flex-direction: column; }
+      .checklist{ grid-template-columns: 1fr 1fr; }
+      .ratio-box{ grid-template-columns: 1fr 1fr; }
+      .alert-list{ grid-template-columns: 1fr; }
+      .metric-big{ font-size: 46px; }
+      .kpi .value{ font-size: 38px; }
+      .inventario-grid{ grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 1024px){
+      .slide{ padding: 10px 16px 28px; }
+      .title{ font-size: 30px; }
+      .title-slide .main-title{ font-size: 42px; }
+      .title-slide .logo-container img{ height: 54px; }
+      .title-slide .brand-line{ font-size: 18px; }
+      .checklist{ grid-template-columns: 1fr 1fr; }
+      .ratio-box{ grid-template-columns: 1fr 1fr; }
+      .kpi .value{ font-size: 30px; }
+      .metric-big{ font-size: 36px; }
+      .inventario-grid{ grid-template-columns: 1fr 1fr; }
+      .nav-top { top: 10px; right: 12px; padding: 6px 10px; }
+      .nav-top button { padding: 4px 14px; font-size: 16px; }
+      .nav-top .counter { font-size: 16px; padding: 0 8px; }
+    }
+    @media (max-width: 768px){
+      .slide{ padding: 8px 12px 24px; }
+      .title{ font-size: 24px; }
       .title-slide .main-title{ font-size: 32px; }
       .title-slide .logo-container img{ height: 40px; }
-      .alert-list{ grid-template-columns: 1fr; }
+      .title-slide .brand-line{ font-size: 14px; }
       .checklist{ grid-template-columns: 1fr; }
+      .ratio-box{ grid-template-columns: 1fr; }
+      .kpi .value{ font-size: 24px; }
+      .metric-big{ font-size: 28px; }
+      .inventario-grid{ grid-template-columns: 1fr; }
+      .nav-top { top: 8px; right: 10px; padding: 4px 8px; }
+      .nav-top button { padding: 3px 10px; font-size: 14px; }
+      .nav-top .counter { font-size: 14px; padding: 0 6px; }
     }
     @media print{
       body{overflow:visible;background:#fff}
-      .slide{ position:relative; display:block !important; page-break-after:always; width:100%; height:100vh; }
-      .nav,.slide-counter{display:none}
+      .slide{ position:relative; display:block !important; page-break-after:always; width:100%; height:100vh; overflow:hidden; }
+      .nav-top{display:none}
     }
   </style>
 </head>
 <body>
 <div class="deck">
 
-  <!-- ===== SLIDE 1: PORTADA MEJORADA CON LOGO ===== -->
+  <!-- ===== SLIDE 1: PORTADA ===== -->
   <section class="slide active title-slide">
     <div class="topbar"></div>
     <div class="logo-container">
-      <img src="https://csplifesciences.com/pe/wp-content/uploads/2022/07/logo-csp-peru.webp" alt="CSP Lifesciences Perú" />
-      <span class="brand-line">Revisión Financiera Ejecutiva</span>
+      <img src="https://i.imgur.com/bqX33ZT.png" alt="CSP Lifesciences Perú" />
+      <span class="brand-line">Revisión Financiera Ejecutiva <span class="en">| Executive Financial Review</span></span>
     </div>
     <h1 class="main-title">
       CSP Lifesciences Perú<br>
       <span class="highlight">Estados Financieros</span> – Mayo 2026
+      <span class="en">| Financial Statements – May 2026</span>
     </h1>
     <div class="sub">
-      Presentación estratégica orientada a Gerencia General, Directorio e Inversionistas,
-      enfocada en rentabilidad, capital de trabajo, solvencia y principales focos de gestión.
+      Presentación estratégica orientada a Gerencia General, Directorio e Inversionistas. <span class="en">| Strategic presentation for General Management, Board of Directors, and Investors.</span>
     </div>
     <div class="pill-row">
-      <div class="pill"><i>📊</i> Ventas acumuladas: S/ 4.23 MM</div>
-      <div class="pill"><i>📈</i> Utilidad neta: S/ 1.08 MM</div>
-      <div class="pill"><i>🎯</i> Margen neto: 25.5%</div>
-      <div class="pill"><i>🏦</i> Activos totales: S/ 4.69 MM</div>
+      <div class="pill"><i>📊</i> Ventas: S/ 4.23 MM <span class="en">| Sales</span></div>
+      <div class="pill"><i>📈</i> Utilidad: S/ 1.08 MM <span class="en">| Net Income</span></div>
+      <div class="pill"><i>🎯</i> Margen neto: 25.5% <span class="en">| Net Margin</span></div>
+      <div class="pill"><i>🏦</i> Activos: S/ 4.69 MM <span class="en">| Assets</span></div>
     </div>
     <div class="footer">
-      <span>CSP Lifesciences Perú</span>
-      <span>Mayo 2026</span>
+      <span class="brand">CSP Lifesciences Perú</span>
+      <span>Mayo 2026 <span class="en">| May 2026</span></span>
     </div>
   </section>
 
-  <!-- ===== SLIDE 2: RESUMEN + DONUT ===== -->
+  <!-- ===== SLIDE 2: RESUMEN ===== -->
   <section class="slide">
     <div class="topbar"></div>
-    <h2 class="title">1. Resumen Ejecutivo</h2>
-    <div class="subtitle">Mensaje principal y visión de rentabilidad acumulada</div>
-    <div class="hero" style="display:grid; grid-template-columns: 1.1fr .9fr; gap:20px; align-items:start;">
-      <div>
-        <div class="headline" style="font-size:26px; font-weight:800; color:var(--csp-blue); margin:6px 0 14px;">
-          CSP Lifesciences Perú cerró mayo 2026 con una <span style="color:var(--csp-teal);">utilidad neta acumulada de S/ 1.08 MM</span>
-          y un <span style="color:var(--csp-gold);">margen neto de 25.5%</span>, respaldado por un sólido nivel de ventas y una adecuada gestión operativa.
-        </div>
-        <div class="quote" style="background:var(--csp-gray); border-left:6px solid var(--csp-gold); border-radius:12px; padding:14px 18px; font-size:16px; line-height:1.5; color:var(--csp-dark);">
-          La compañía presenta una rentabilidad destacable para una operación en crecimiento,
-          manteniendo márgenes superiores al promedio del sector farmacéutico de distribución y comercialización.
-        </div>
-      </div>
-      <div class="card soft-gray">
-        <div class="section-title">Distribución de ingresos</div>
-        <div class="chart-container">
-          <canvas id="resumenDonut" width="300" height="200"></canvas>
-        </div>
-        <div style="display:flex; justify-content:space-between; font-size:12px; padding:0 4px; margin-top:2px;">
-          <span><span style="display:inline-block; width:10px; height:10px; background:#008c8c; border-radius:4px;"></span> Utilidad Neta (25.5%)</span>
-          <span><span style="display:inline-block; width:10px; height:10px; background:#c9d4e0; border-radius:4px;"></span> Costos/Gastos</span>
-        </div>
-      </div>
-    </div>
-    <div class="footer">
-      <span>Resumen Ejecutivo</span>
-      <span>CSP Lifesciences Perú | Mayo 2026</span>
-    </div>
-  </section>
-
-  <!-- ===== SLIDE 3: RESULTADOS + BARRAS ===== -->
-  <section class="slide">
-    <div class="topbar"></div>
-    <h2 class="title">2. Estado de Resultados – Generación de Valor</h2>
-    <div class="subtitle">Conversión eficiente de ventas en utilidad</div>
-    <div class="grid-2">
-      <div class="card">
-        <div class="section-title">Estructura de rentabilidad</div>
-        <table>
-          <thead><tr><th>Concepto</th><th style="text-align:right;">Monto</th></tr></thead>
-          <tbody>
-            <tr><td>Ventas</td><td class="num">S/ 4.23 MM</td></tr>
-            <tr><td>Costo de ventas</td><td class="num">S/ 1.67 MM</td></tr>
-            <tr><td>Utilidad Bruta</td><td class="num">S/ 2.56 MM</td></tr>
-            <tr><td>Gastos Operativos</td><td class="num">S/ 1.41 MM</td></tr>
-            <tr><td>Utilidad Operativa</td><td class="num">S/ 1.15 MM</td></tr>
-            <tr><td>Resultado Neto</td><td class="num">S/ 1.08 MM</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div>
-        <div class="card soft-blue">
-          <div class="section-title">Ventas</div>
-          <div class="metric-big">S/ 4.23 MM</div>
-          <div class="metric-note">Base de generación de valor con márgenes robustos.</div>
-        </div>
-        <div class="card" style="margin-top:12px;">
-          <div class="section-title">Margen sobre ventas</div>
-          <div class="chart-container-sm">
-            <canvas id="margenChart" width="300" height="120"></canvas>
+    <h2 class="title">1. <i>Resumen Ejecutivo</i> <span class="en">| Executive Summary</span></h2>
+    <div class="subtitle">Mensaje principal y visión de rentabilidad <span class="en">| Main message and profitability outlook</span></div>
+    <div class="slide-content">
+      <div class="flex-row">
+        <div class="flex-2" style="display:flex; flex-direction:column; gap:14px;">
+          <div style="font-size:38px; font-weight:800; color:var(--csp-primary); line-height:1.3; flex:1; display:flex; align-items:center; flex-wrap:wrap;">
+            Utilidad neta de <span style="color:var(--csp-secondary); margin-left:12px;">S/ 1.08 MM&nbsp</span>
+            y <span style="color:var(--csp-secondary); margin-left:12px;">margen neto de 25.5%</span>
+            <span class="en" style="font-size:0.35em; display:block; margin-left:0; margin-top:4px;">| Net income of S/ 1.08 MM and net margin of 25.5%</span>
+          </div>
+          <div style="background:var(--csp-gray); border-left:6px solid var(--csp-secondary); border-radius:12px; padding:22px 28px; font-size:23px; line-height:1.6; flex:1; display:flex; align-items:center; flex-wrap:wrap;">
+            La compañía presenta una rentabilidad destacable, manteniendo márgenes superiores al promedio del sector farmacéutico de distribución y comercialización.
+            <span class="en" style="font-size:0.55em; display:block; margin-left:0; margin-top:4px;">| The company presents remarkable profitability, maintaining margins above the average of the pharmaceutical distribution and commercialization sector.</span>
           </div>
         </div>
-        <div class="card soft-gray" style="margin-top:12px; border-left:4px solid var(--csp-gold);">
-          <span style="font-weight:600;">Mensaje ejecutivo:</span> La empresa convierte ventas en ganancias de forma eficiente, con estructura de costos controlada.
+        <div class="card card-gray-light flex-1">
+          <div class="section-title">Distribución de ingresos <span class="en">| Income Distribution</span></div>
+          <div class="chart-container">
+            <canvas id="resumenDonut"></canvas>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:18px; padding:0 4px; margin-top:4px;">
+            <span><span style="display:inline-block; width:18px; height:18px; background:var(--csp-secondary); border-radius:4px;"></span> Utilidad (25.5%) <span class="en" style="font-size:0.45em;">| Net Income</span></span>
+            <span><span style="display:inline-block; width:18px; height:18px; background:#D1D9E6; border-radius:4px;"></span> Costos/Gastos <span class="en" style="font-size:0.45em;">| Costs/Expenses</span></span>
+          </div>
         </div>
       </div>
     </div>
     <div class="footer">
-      <span>Estado de Resultados</span>
-      <span>CSP Lifesciences Perú | Mayo 2026</span>
+      <span class="brand">Resumen Ejecutivo <span class="en">| Executive Summary</span></span>
+      <span>CSP Lifesciences Perú | Mayo 2026 <span class="en">| May 2026</span></span>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 3: RESULTADOS ===== -->
+  <section class="slide">
+    <div class="topbar"></div>
+    <h2 class="title">2. <i>Estado de Resultados</i> <span class="en">| Income Statement</span></h2>
+    <div class="subtitle">Conversión eficiente de ventas en utilidad <span class="en">| Efficient conversion of sales into profit</span></div>
+    <div class="slide-content">
+      <div class="flex-row">
+        <div class="card flex-2">
+          <div class="section-title">Estructura de rentabilidad <span class="en">| Profitability Structure</span></div>
+          <table>
+            <thead><tr><th>Concepto <span class="en">| Concept</span></th><th style="text-align:right;">Monto <span class="en">| Amount</span></th></tr></thead>
+            <tbody>
+              <tr><td>Ventas <span class="en">| Sales</span></td><td class="num">S/ 4.23 MM</td></tr>
+              <tr><td style="padding-left:30px;">▸ <span class="sector-privado">Sector Privado (53%) <span class="en" style="font-size:0.5em; color:var(--csp-gray-dark);">| Private Sector</span></span></td><td class="num"><span class="sector-privado">S/ 2.24 MM</span></td></tr>
+              <tr><td style="padding-left:30px;">▸ <span class="sector-publico">Sector Público (47%) <span class="en" style="font-size:0.5em; color:var(--csp-gray-dark);">| Public Sector</span></span></td><td class="num"><span class="sector-publico">S/ 1.99 MM</span></td></tr>
+              <tr><td>Costo de ventas <span class="en">| Cost of Sales</span></td><td class="num">S/ 1.67 MM</td></tr>
+              <tr><td><strong>Utilidad Bruta <span class="en">| Gross Profit</span></strong></td><td class="num"><strong>S/ 2.56 MM</strong></td></tr>
+              <tr><td>Gastos Operativos <span class="en">| Operating Expenses</span></td><td class="num">S/ 1.41 MM</td></tr>
+              <tr><td><strong>Utilidad Operativa <span class="en">| Operating Income</span></strong></td><td class="num"><strong>S/ 1.15 MM</strong></td></tr>
+              <tr><td><strong>Resultado Neto <span class="en">| Net Income</span></strong></td><td class="num"><strong>S/ 1.08 MM</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flex-1" style="display:flex; flex-direction:column; gap:14px;">
+          <div class="card card-primary-light flex-1">
+            <div class="section-title">Ventas <span class="en">| Sales</span></div>
+            <div class="metric-big">S/ 4.23 MM</div>
+            <div class="metric-note">Base de generación de valor con márgenes robustos. <span class="en">| Value generation base with robust margins.</span></div>
+          </div>
+          <div class="card flex-1">
+            <div class="section-title">Margen sobre ventas <span class="en">| Margin on Sales</span></div>
+            <div class="chart-container-sm">
+              <canvas id="margenChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <span class="brand">Estado de Resultados <span class="en">| Income Statement</span></span>
+      <span>CSP Lifesciences Perú | Mayo 2026 <span class="en">| May 2026</span></span>
     </div>
   </section>
 
   <!-- ===== SLIDE 4: FORTALEZA COMERCIAL ===== -->
   <section class="slide">
     <div class="topbar"></div>
-    <h2 class="title">3. Fortaleza Comercial</h2>
-    <div class="subtitle">Crecimiento con cartera relevante por gestionar</div>
-    <div class="split">
-      <div class="card soft-teal">
-        <div class="section-title">Cuentas por cobrar comerciales</div>
-        <div class="metric-big">S/ 1.68 MM</div>
-        <div class="callout" style="font-size:18px;">≈ 40% de las ventas acumuladas</div>
-        <div class="chart-container-sm" style="margin-top:8px;">
-          <canvas id="carteraChart" width="300" height="100"></canvas>
+    <h2 class="title">3. <i>Fortaleza Comercial</i> <span class="en">| Commercial Strength</span></h2>
+    <div class="subtitle">Crecimiento con cartera relevante por gestionar <span class="en">| Growth with relevant portfolio to manage</span></div>
+    <div class="slide-content">
+      <div class="flex-row">
+        <div class="card card-secondary-light flex-1">
+          <div class="section-title">Cuentas por cobrar comerciales <span class="en">| Accounts Receivable</span></div>
+          <div class="metric-big">S/ 1.68 MM</div>
+          <div class="callout" style="font-size:24px;">≈ 40% de las ventas acumuladas <span class="en">| ≈ 40% of accumulated sales</span></div>
+          <div class="chart-container-sm">
+            <canvas id="carteraChart"></canvas>
+          </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="section-title">Interpretación</div>
-        <ul class="bullets">
-          <li>Expansión comercial</li>
-          <li>Crecimiento de colocaciones</li>
-          <li>Necesidad de vigilancia sobre cobranza</li>
-        </ul>
-      </div>
-    </div>
-    <div class="grid-2" style="margin-top:14px;">
-      <div class="card soft-gold">
-        <div class="section-title">Riesgos a monitorear</div>
-        <ul class="bullets">
-          <li>Días de cobranza</li>
-          <li>Concentración de clientes</li>
-          <li>Capital de trabajo requerido</li>
-        </ul>
-      </div>
-      <div class="card soft-blue">
-        <div class="section-title">Mensaje ejecutivo</div>
-        <div class="callout" style="font-size:18px;">
-          El crecimiento comercial viene acompañado de una cartera significativa que debe gestionarse cuidadosamente para preservar la liquidez.
+        <div class="flex-1" style="display:flex; flex-direction:column; gap:14px;">
+          <div class="card flex-1">
+            <div class="section-title">Interpretación <span class="en">| Interpretation</span></div>
+            <ul class="bullets">
+              <li><strong>Expansión</strong> comercial activa <span class="en">| Active commercial expansion</span></li>
+              <li><strong>Crecimiento</strong> de colocaciones <span class="en">| Growth in placements</span></li>
+              <li>Necesidad de <strong>vigilancia</strong> en cobranza <span class="en">| Need for collection monitoring</span></li>
+            </ul>
+          </div>
+          <div class="card card-primary-light flex-1" style="border-left:6px solid var(--csp-secondary);">
+            <div class="section-title">Mensaje ejecutivo <span class="en">| Executive Message</span></div>
+            <div style="font-size:22px; font-weight:600; color:var(--csp-primary);">
+              El crecimiento comercial viene acompañado de una cartera significativa que debe gestionarse cuidadosamente para preservar la liquidez.
+              <span class="en" style="font-size:0.5em; display:block; font-weight:400; color:var(--csp-gray-dark);">| Commercial growth comes with a significant portfolio that must be carefully managed to preserve liquidity.</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div class="footer">
-      <span>Fortaleza Comercial</span>
-      <span>CSP Lifesciences Perú | Mayo 2026</span>
+      <span class="brand">Fortaleza Comercial <span class="en">| Commercial Strength</span></span>
+      <span>CSP Lifesciences Perú | Mayo 2026 <span class="en">| May 2026</span></span>
     </div>
   </section>
 
   <!-- ===== SLIDE 5: CAPITAL DE TRABAJO ===== -->
   <section class="slide">
     <div class="topbar"></div>
-    <h2 class="title">4. Capital de Trabajo</h2>
-    <div class="subtitle">El motor operativo del crecimiento</div>
-    <div class="grid-2">
-      <div class="card">
-        <div class="section-title">Activos corrientes</div>
-        <table>
-          <thead><tr><th>Concepto</th><th style="text-align:right;">Valor</th></tr></thead>
-          <tbody>
-            <tr><td>Caja y Bancos</td><td class="num">S/ 420.8 mil</td></tr>
-            <tr><td>Cuentas por Cobrar</td><td class="num">S/ 1.68 MM</td></tr>
-            <tr><td>Inventarios</td><td class="num">S/ 1.69 MM</td></tr>
-            <tr><td>Anticipos y Créditos</td><td class="num">S/ 523.5 mil</td></tr>
-            <tr><td><strong>Total Activo Corriente</strong></td><td class="num"><strong>S/ 4.53 MM</strong></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div>
-        <div class="card soft-blue">
-          <div class="section-title">Composición del activo corriente</div>
-          <div class="chart-container-sm">
-            <canvas id="ctaChart" width="300" height="130"></canvas>
+    <h2 class="title">4. <i>Capital de Trabajo</i> – <i>Inventarios</i> <span class="en">| Working Capital – Inventories</span></h2>
+    <div class="subtitle">El motor operativo del crecimiento <span class="en">| The operational engine of growth</span></div>
+    <div class="slide-content">
+      <div class="flex-row" style="flex:1.2;">
+        <div class="card flex-2">
+          <div class="section-title">Activos corrientes <span class="en">| Current Assets</span></div>
+          <table>
+            <thead><tr><th>Concepto <span class="en">| Concept</span></th><th style="text-align:right;">Valor <span class="en">| Value</span></th></tr></thead>
+            <tbody>
+              <tr><td>Caja y Bancos <span class="en">| Cash and Banks</span></td><td class="num">S/ 420.8 mil</td></tr>
+              <tr><td>Cuentas por Cobrar <span class="en">| Accounts Receivable</span></td><td class="num">S/ 1.68 MM</td></tr>
+              <tr><td>Inventarios <span class="en">| Inventories</span></td><td class="num">S/ 1.69 MM</td></tr>
+              <tr><td>Anticipos y Créditos <span class="en">| Advances and Credits</span></td><td class="num">S/ 523.5 mil</td></tr>
+              <tr style="border-top:2px solid var(--csp-primary);"><td><strong>Total Activo Corriente <span class="en">| Total Current Assets</span></strong></td><td class="num"><strong>S/ 4.53 MM</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flex-1" style="display:flex; flex-direction:column; gap:12px;">
+          <div class="card card-primary-light flex-1">
+            <div class="section-title">Composición del activo corriente <span class="en">| Current Assets Composition</span></div>
+            <div class="chart-container-sm" style="height:130px;">
+              <canvas id="ctaChart"></canvas>
+            </div>
+          </div>
+          <div class="card flex-1" style="border-top:4px solid var(--csp-secondary); padding:14px 18px;">
+            <div class="section-title">Lectura ejecutiva <span class="en">| Executive Reading</span></div>
+            <div style="font-size:52px; font-weight:900; color:var(--csp-secondary); line-height:1;">96%+</div>
+            <div class="metric-note" style="font-size:17px;">
+              El capital de trabajo representa más del 96% de los activos totales, confirmando que la expansión del negocio depende directamente de una administración eficiente.
+              <span class="en" style="font-size:0.65em; display:block; opacity:0.6;">| Working capital represents more than 96% of total assets, confirming that business expansion depends directly on efficient management.</span>
+            </div>
           </div>
         </div>
-        <div class="card" style="margin-top:14px; border-top: 4px solid var(--csp-gold);">
-          <div class="section-title">Lectura ejecutiva</div>
-          <div class="metric-big" style="font-size:40px;">96%+</div>
-          <div class="metric-note">
-            El capital de trabajo representa más del 96% de los activos totales,
-            confirmando que la expansión del negocio depende directamente de una administración eficiente
-            de cartera, inventario y liquidez operativa.
+      </div>
+      <div style="flex-shrink:0;">
+        <div style="font-size:16px; font-weight:700; color:var(--csp-primary); margin-bottom:6px;">Clasificación de Inventarios por Vida Útil <span class="en" style="font-size:0.55em; font-weight:400; opacity:0.6; margin-left:6px;">| Inventory Classification by Shelf Life</span></div>
+        <div class="inventario-grid">
+          <div class="inventario-item verde">
+            <div class="porcentaje">19.79%</div>
+            <div class="categoria">🟢 Vendible <span class="en">| Sellable</span></div>
+            <div class="monto">S/ 333,641</div>
           </div>
+          <div class="inventario-item amarillo">
+            <div class="porcentaje">10.53%</div>
+            <div class="categoria">🟡 Alerta <span class="en">| Alert</span></div>
+            <div class="monto">S/ 177,562</div>
+          </div>
+          <div class="inventario-item rojo">
+            <div class="porcentaje">69.68%</div>
+            <div class="categoria">🔴 Crítico <span class="en">| Critical</span></div>
+            <div class="monto">S/ 1,174,815</div>
+          </div>
+        </div>
+        <div style="background:var(--csp-gray); border-left:6px solid #EF4444; border-radius:12px; padding:12px 18px; margin-top:6px; font-size:16px; line-height:1.5;">
+          <strong style="color:var(--csp-primary);">🎯 Mensaje ejecutivo:</strong> Situación crítica: El <strong>80.21%</strong> del inventario tiene menos de 18 meses de vida útil, por lo que es complicado ser comercializado en el mercado actual. Del total, el <strong style="color:#EF4444;">69.68%</strong> tiene menos de 12 meses, lo que representa <strong style="color:#EF4444;">S/ 1,174,814.70</strong> en riesgo de pérdida total por vencimiento.
+          <span class="en" style="font-size:0.65em; display:block; opacity:0.6; margin-top:4px;">| Critical situation: 80.21% of inventory has less than 18 months of shelf life, making it difficult to commercialize. Of the total, 69.68% has less than 12 months, representing S/ 1,174,814.70 at risk of total loss due to expiration.</span>
         </div>
       </div>
     </div>
     <div class="footer">
-      <span>Capital de Trabajo</span>
-      <span>CSP Lifesciences Perú | Mayo 2026</span>
+      <span class="brand">Capital de Trabajo – Inventarios <span class="en">| Working Capital – Inventories</span></span>
+      <span>CSP Lifesciences Perú | Mayo 2026 <span class="en">| May 2026</span></span>
     </div>
   </section>
 
   <!-- ===== SLIDE 6: LIQUIDEZ Y SOLVENCIA ===== -->
   <section class="slide">
     <div class="topbar"></div>
-    <h2 class="title">5. Liquidez y Solvencia</h2>
-    <div class="subtitle">Crecimiento apoyado en financiamiento operativo</div>
-    <div class="ratio-box">
-      <div class="ratio-item"><div class="name">Activos Totales</div><div class="amt">S/ 4.69 MM</div></div>
-      <div class="ratio-item"><div class="name">Pasivos Totales</div><div class="amt">S/ 3.62 MM</div></div>
-      <div class="ratio-item"><div class="name">Patrimonio</div><div class="amt">S/ 1.07 MM</div></div>
-    </div>
-    <div class="grid-2" style="margin-top:18px; align-items:center;">
-      <div class="card">
-        <div class="section-title">Ratio Patrimonio / Activos</div>
-        <div class="metric-big">≈ 23%</div>
-        <div class="metric-note">
-          La empresa aún se apalanca principalmente en pasivos operativos y obligaciones comerciales,
-          mientras fortalece su base patrimonial mediante la acumulación de resultados.
-        </div>
+    <h2 class="title">5. <i>Liquidez y Solvencia</i> <span class="en">| Liquidity and Solvency</span></h2>
+    <div class="subtitle">Crecimiento apoyado en financiamiento operativo <span class="en">| Growth supported by operating financing</span></div>
+    <div class="slide-content">
+      <div class="ratio-box">
+        <div class="ratio-item"><div class="name">Activos Totales <span class="en">| Total Assets</span></div><div class="amt">S/ 4.69 MM</div></div>
+        <div class="ratio-item"><div class="name">Pasivos Totales <span class="en">| Total Liabilities</span></div><div class="amt">S/ 3.62 MM</div></div>
+        <div class="ratio-item"><div class="name">Patrimonio <span class="en">| Equity</span></div><div class="amt">S/ 1.07 MM</div></div>
       </div>
-      <div class="card" style="display:flex; justify-content:center; align-items:center; flex-direction:column;">
-        <div class="chart-container-sm" style="width:150px; height:150px;">
-          <canvas id="donutPatrimonio" width="200" height="200"></canvas>
+      <div class="flex-row">
+        <div class="card flex-2">
+          <div class="section-title">Ratio Patrimonio / Activos <span class="en">| Equity / Assets Ratio</span></div>
+          <div style="font-size:60px; font-weight:900; color:var(--csp-secondary);">≈ 23%</div>
+          <div class="metric-note">
+            La empresa se apalanca principalmente en pasivos operativos y obligaciones comerciales, mientras fortalece su base patrimonial mediante la acumulación de resultados.
+            <span class="en" style="font-size:0.65em; display:block; opacity:0.6;">| The company leverages primarily on operating liabilities and commercial obligations, while strengthening its equity base through accumulated results.</span>
+          </div>
         </div>
-        <span style="font-size:12px; font-weight:700; color:#5a6a7a;">Patrimonio / Activos</span>
-      </div>
-    </div>
-    <div class="card soft-gold" style="margin-top:16px; border-left:6px solid var(--csp-gold);">
-      <div class="section-title">Mensaje ejecutivo</div>
-      <div class="callout" style="font-size:19px;">
-        La compañía financia su crecimiento principalmente mediante obligaciones comerciales y financiamiento operativo,
-        mientras fortalece progresivamente su patrimonio mediante la generación de utilidades.
+        <div class="card flex-1" style="display:flex; justify-content:center; align-items:center; flex-direction:column;">
+          <div style="width:220px; height:220px;">
+            <canvas id="donutPatrimonio"></canvas>
+          </div>
+          <span style="font-size:18px; font-weight:700; color:var(--csp-gray-dark); margin-top:4px;">Patrimonio / Activos <span class="en" style="font-size:0.55em; opacity:0.6;">| Equity / Assets</span></span>
+        </div>
       </div>
     </div>
     <div class="footer">
-      <span>Liquidez y Solvencia</span>
-      <span>CSP Lifesciences Perú | Mayo 2026</span>
+      <span class="brand">Liquidez y Solvencia <span class="en">| Liquidity and Solvency</span></span>
+      <span>CSP Lifesciences Perú | Mayo 2026 <span class="en">| May 2026</span></span>
     </div>
   </section>
 
   <!-- ===== SLIDE 7: INVENTARIOS ===== -->
   <section class="slide">
     <div class="topbar"></div>
-    <h2 class="title">6. Inventarios: Motor del Negocio</h2>
-    <div class="subtitle">Activo operativo clave para sostener la demanda</div>
-    <div class="split">
-      <div class="card soft-teal">
-        <div class="section-title">Inventario al cierre</div>
-        <div class="metric-big">S/ 1.69 MM</div>
-        <div class="callout" style="font-size:18px;">36% de los activos totales</div>
-        <div class="chart-container-sm" style="margin-top:8px;">
-          <canvas id="inventarioBar" width="300" height="80"></canvas>
+    <h2 class="title">6. <i>Inventarios:</i> Motor del Negocio <span class="en">| Inventories: Business Engine</span></h2>
+    <div class="subtitle">Activo operativo clave para sostener la demanda <span class="en">| Key operating asset to sustain demand</span></div>
+    <div class="slide-content">
+      <div class="flex-row">
+        <div class="card card-secondary-light flex-1">
+          <div class="section-title">Inventario al cierre <span class="en">| Inventory at Closing</span></div>
+          <div class="metric-big">S/ 1.69 MM</div>
+          <div class="callout" style="font-size:24px;">36% de los activos totales <span class="en">| 36% of total assets</span></div>
+          <div class="chart-container-sm">
+            <canvas id="inventarioBar"></canvas>
+          </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="section-title">Lectura estratégica</div>
-        <ul class="bullets">
-          <li>Principal activo operativo</li>
-          <li>Fuente de disponibilidad comercial</li>
-          <li>Palanca para sostener crecimiento</li>
-        </ul>
-      </div>
-    </div>
-    <div class="grid-2" style="margin-top:14px;">
-      <div class="card soft-gold">
-        <div class="section-title">Riesgos</div>
-        <ul class="bullets">
-          <li>Obsolescencia</li>
-          <li>Vencimientos</li>
-          <li>Sobre stock</li>
-        </ul>
-      </div>
-      <div class="card" style="border-left:6px solid var(--csp-teal);">
-        <div class="section-title">Oportunidad</div>
-        <div class="callout" style="font-size:20px;">Optimización de rotación y compras</div>
-        <div class="metric-note" style="margin-top:4px;">Una gestión más fina del inventario puede liberar caja, reducir riesgos y elevar aún más el retorno operativo.</div>
+        <div class="flex-1" style="display:flex; flex-direction:column; gap:14px;">
+          <div class="card flex-1">
+            <div class="section-title">Lectura estratégica <span class="en">| Strategic Reading</span></div>
+            <ul class="bullets">
+              <li><strong>Principal</strong> activo operativo <span class="en">| Main operating asset</span></li>
+              <li>Fuente de <strong>disponibilidad</strong> comercial <span class="en">| Source of commercial availability</span></li>
+              <li><strong>Palanca</strong> para sostener crecimiento <span class="en">| Leverage to sustain growth</span></li>
+            </ul>
+          </div>
+          <div class="card flex-1" style="border-left:6px solid var(--csp-secondary);">
+            <div class="section-title">Oportunidad <span class="en">| Opportunity</span></div>
+            <div style="font-size:24px; font-weight:700; color:var(--csp-primary);">Optimización de rotación y compras <span class="en" style="font-size:0.45em; display:block; font-weight:400; color:var(--csp-gray-dark);">| Optimization of rotation and purchases</span></div>
+            <div class="metric-note">Una gestión más fina del inventario puede liberar caja, reducir riesgos y elevar aún más el retorno operativo. <span class="en" style="font-size:0.65em; display:block; opacity:0.6;">| A finer inventory management can free up cash, reduce risks, and further increase operating return.</span></div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="footer">
-      <span>Inventarios</span>
-      <span>CSP Lifesciences Perú | Mayo 2026</span>
+      <span class="brand">Inventarios <span class="en">| Inventories</span></span>
+      <span>CSP Lifesciences Perú | Mayo 2026 <span class="en">| May 2026</span></span>
     </div>
   </section>
 
   <!-- ===== SLIDE 8: OBLIGACIONES ===== -->
   <section class="slide">
     <div class="topbar"></div>
-    <h2 class="title">7. Estructura de Obligaciones</h2>
-    <div class="subtitle">Apalancamiento con soporte corporativo</div>
-    <div class="grid-2">
-      <div class="card">
-        <div class="section-title">Pasivos corrientes</div>
-        <div class="metric-big">S/ 3.60 MM</div>
-        <table style="margin-top:8px;">
-          <thead><tr><th>Concepto</th><th style="text-align:right;">Valor</th></tr></thead>
-          <tbody>
-            <tr><td>Cuentas por pagar relacionadas</td><td class="num">S/ 3.15 MM</td></tr>
-            <tr><td>Proveedores terceros</td><td class="num">S/ 204 mil</td></tr>
-            <tr><td>Tributos por pagar</td><td class="num">S/ 68 mil</td></tr>
-            <tr><td>Remuneraciones por pagar</td><td class="num">S/ 173 mil</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div>
-        <div class="card soft-blue">
-          <div class="section-title">Composición de pasivos corrientes</div>
-          <div class="chart-container-sm">
-            <canvas id="pasivosChart" width="300" height="130"></canvas>
-          </div>
+    <h2 class="title">7. <i>Estructura de Obligaciones</i> <span class="en">| Liabilities Structure</span></h2>
+    <div class="subtitle">Apalancamiento con soporte corporativo <span class="en">| Leverage with corporate support</span></div>
+    <div class="slide-content">
+      <div class="flex-row">
+        <div class="card flex-2">
+          <div class="section-title">Pasivos corrientes <span class="en">| Current Liabilities</span></div>
+          <div style="font-size:56px; font-weight:900; color:var(--csp-secondary);">S/ 3.60 MM</div>
+          <table style="margin-top:6px;">
+            <thead><tr><th>Concepto <span class="en">| Concept</span></th><th style="text-align:right;">Valor <span class="en">| Value</span></th></tr></thead>
+            <tbody>
+              <tr><td>Cuentas por pagar relacionadas <span class="en">| Related party payables</span></td><td class="num">S/ 3.15 MM</td></tr>
+              <tr><td>Proveedores terceros <span class="en">| Third-party suppliers</span></td><td class="num">S/ 204 mil</td></tr>
+              <tr><td>Tributos por pagar <span class="en">| Taxes payable</span></td><td class="num">S/ 68 mil</td></tr>
+              <tr><td>Remuneraciones por pagar <span class="en">| Payroll payable</span></td><td class="num">S/ 173 mil</td></tr>
+            </tbody>
+          </table>
         </div>
-        <div class="card soft-teal" style="margin-top:14px; border-left:6px solid var(--csp-teal);">
-          <div class="section-title">Mensaje ejecutivo</div>
-          <div class="metric-note" style="font-size:15px; line-height:1.5;">
-            La compañía posee una ventaja financiera importante al apalancarse en soporte corporativo
-            y relaciones estratégicas del grupo.
+        <div class="flex-1" style="display:flex; flex-direction:column; gap:14px;">
+          <div class="card card-primary-light flex-1">
+            <div class="section-title">Composición de pasivos corrientes <span class="en">| Current Liabilities Composition</span></div>
+            <div class="chart-container-sm">
+              <canvas id="pasivosChart"></canvas>
+            </div>
+          </div>
+          <div class="card card-secondary-light flex-1" style="border-left:6px solid var(--csp-secondary);">
+            <div class="section-title">Mensaje ejecutivo <span class="en">| Executive Message</span></div>
+            <div class="metric-note" style="font-size:21px; line-height:1.5;">
+              La compañía posee una ventaja financiera importante al apalancarse en <strong>soporte corporativo</strong> y relaciones estratégicas del grupo.
+              <span class="en" style="font-size:0.65em; display:block; opacity:0.6;">| The company has an important financial advantage by leveraging <strong>corporate support</strong> and strategic relationships of the group.</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="footer">
-      <span>Estructura de Obligaciones</span>
-      <span>CSP Lifesciences Perú | Mayo 2026</span>
+      <span class="brand">Estructura de Obligaciones <span class="en">| Liabilities Structure</span></span>
+      <span>CSP Lifesciences Perú | Mayo 2026 <span class="en">| May 2026</span></span>
     </div>
   </section>
 
   <!-- ===== SLIDE 9: ROE ===== -->
   <section class="slide">
     <div class="topbar"></div>
-    <h2 class="title">8. Rentabilidad del Patrimonio</h2>
-    <div class="subtitle">Retorno excepcional sobre la inversión accionaria</div>
-    <div class="grid-3">
-      <div class="kpi green"><div class="label">Utilidad Neta</div><div class="value">S/ 1.08 MM</div></div>
-      <div class="kpi blue"><div class="label">Patrimonio</div><div class="value">S/ 1.07 MM</div></div>
-      <div class="kpi gold"><div class="label">ROE Aproximado</div><div class="value">100.8%</div></div>
-    </div>
-    <div class="grid-2" style="margin-top:18px;">
-      <div class="card soft-gold">
-        <div class="section-title">Interpretación</div>
-        <div class="callout" style="font-size:19px;">
-          Por cada <strong style="color:var(--csp-blue);">S/1 invertido por los accionistas</strong>,
-          se han generado aproximadamente <strong style="color:var(--csp-teal);">S/1.01 de utilidad acumulada</strong>.
-        </div>
+    <h2 class="title">8. <i>Rentabilidad del Patrimonio</i> <span class="en">| Return on Equity</span></h2>
+    <div class="subtitle">Retorno excepcional sobre la inversión accionaria <span class="en">| Exceptional return on shareholder investment</span></div>
+    <div class="slide-content">
+      <div class="grid-3" style="flex-shrink:0;">
+        <div class="kpi primary"><div class="label">Utilidad Neta <span class="en">| Net Income</span></div><div class="value">S/ 1.08 MM</div></div>
+        <div class="kpi secondary"><div class="label">Patrimonio <span class="en">| Equity</span></div><div class="value">S/ 1.07 MM</div></div>
+        <div class="kpi dark"><div class="label">ROE Aproximado <span class="en">| Approx. ROE</span></div><div class="value">100.8%</div></div>
       </div>
-      <div class="card" style="display:flex; justify-content:center; align-items:center; flex-direction:column;">
-        <div class="chart-container-sm" style="width:180px; height:140px;">
-          <canvas id="roeChart" width="300" height="180"></canvas>
+      <div class="flex-row">
+        <div class="card flex-2" style="border-left:6px solid var(--csp-secondary);">
+          <div class="section-title">Interpretación <span class="en">| Interpretation</span></div>
+          <div style="font-size:30px; font-weight:800; color:var(--csp-primary);">
+            Por cada <strong style="color:var(--csp-primary);">S/1 invertido por los accionistas</strong>,
+            se han generado aproximadamente <strong style="color:var(--csp-secondary);">S/1.01 de utilidad acumulada</strong>.
+            <span class="en" style="font-size:0.35em; display:block; font-weight:400; color:var(--csp-gray-dark);">| For each S/1 invested by shareholders, approximately S/1.01 of accumulated profit has been generated.</span>
+          </div>
         </div>
-        <span style="font-size:12px; font-weight:700; color:#5a6a7a;">ROE vs Promedio Sector</span>
+        <div class="card flex-1" style="display:flex; justify-content:center; align-items:center; flex-direction:column;">
+          <div style="width:220px; height:200px;">
+            <canvas id="roeChart"></canvas>
+          </div>
+          <span style="font-size:18px; font-weight:700; color:var(--csp-gray-dark); margin-top:4px;">ROE vs Promedio Sector <span class="en" style="font-size:0.55em; opacity:0.6;">| ROE vs Sector Average</span></span>
+        </div>
       </div>
     </div>
     <div class="footer">
-      <span>Rentabilidad del Patrimonio</span>
-      <span>CSP Lifesciences Perú | Mayo 2026</span>
+      <span class="brand">Rentabilidad del Patrimonio <span class="en">| Return on Equity</span></span>
+      <span>CSP Lifesciences Perú | Mayo 2026 <span class="en">| May 2026</span></span>
     </div>
   </section>
 
   <!-- ===== SLIDE 10: ALERTAS ===== -->
   <section class="slide">
     <div class="topbar"></div>
-    <h2 class="title">9. Principales Alertas de Gestión</h2>
-    <div class="subtitle">Focos prioritarios para el segundo semestre</div>
-    <div class="alert-list">
-      <div class="alert orange"><h4>1. Cartera Comercial</h4><p><strong>S/ 1.68 MM</strong> pendientes de cobro.<br><br><strong>Acción:</strong> fortalecer seguimiento de cobranza.</p></div>
-      <div class="alert red"><h4>2. Concentración de Inventario</h4><p><strong>S/ 1.69 MM</strong> en stock.<br><br><strong>Acción:</strong> monitorear rotación y vencimientos.</p></div>
-      <div class="alert blue"><h4>3. Dependencia de Financiamiento Relacionado</h4><p><strong>S/ 3.15 MM</strong>.<br><br><strong>Acción:</strong> diversificar fuentes de financiamiento.</p></div>
-      <div class="alert teal"><h4>4. Costos Financieros</h4><p>Gastos financieros de <strong>S/ 202.8 mil</strong>.<br><br><strong>Acción:</strong> optimizar estructura financiera.</p></div>
+    <h2 class="title">9. <i>Principales Alertas</i> de Gestión <span class="en">| Main Management Alerts</span></h2>
+    <div class="subtitle">Focos prioritarios para el segundo semestre <span class="en">| Priority focuses for the second half</span></div>
+    <div class="slide-content">
+      <div class="alert-list">
+        <div class="alert orange"><h4>1. Cartera Comercial <span class="en">| Commercial Portfolio</span></h4><p><strong>S/ 1.68 MM</strong> pendientes de cobro. <span class="en">| pending collection.</span><br><br><strong>Acción:</strong> fortalecer seguimiento de cobranza. <span class="en">| Action: strengthen collection follow-up.</span></p></div>
+        <div class="alert red"><h4>2. Concentración de Inventario <span class="en">| Inventory Concentration</span></h4><p><strong>S/ 1.69 MM</strong> en stock. <span class="en">| in stock.</span><br><br><strong>Acción:</strong> monitorear rotación y vencimientos. <span class="en">| Action: monitor rotation and expirations.</span></p></div>
+        <div class="alert blue"><h4>3. Dependencia de Financiamiento <span class="en">| Financing Dependence</span></h4><p><strong>S/ 3.15 MM</strong> en pasivos relacionados. <span class="en">| in related liabilities.</span><br><br><strong>Acción:</strong> diversificar fuentes de financiamiento. <span class="en">| Action: diversify financing sources.</span></p></div>
+        <div class="alert teal"><h4>4. Costos Financieros <span class="en">| Financial Costs</span></h4><p>Gastos financieros de <strong>S/ 202.8 mil</strong>. <span class="en">| Financial expenses of S/ 202.8 thousand.</span><br><br><strong>Acción:</strong> optimizar estructura financiera. <span class="en">| Action: optimize financial structure.</span></p></div>
+      </div>
     </div>
     <div class="footer">
-      <span>Alertas de Gestión</span>
-      <span>CSP Lifesciences Perú | Mayo 2026</span>
+      <span class="brand">Alertas de Gestión <span class="en">| Management Alerts</span></span>
+      <span>CSP Lifesciences Perú | Mayo 2026 <span class="en">| May 2026</span></span>
     </div>
   </section>
 
   <!-- ===== SLIDE 11: CONCLUSIONES ===== -->
   <section class="slide">
     <div class="topbar"></div>
-    <h2 class="title">10. Conclusiones para Directorio</h2>
-    <div class="subtitle">Síntesis ejecutiva y mensaje de cierre</div>
-    <ul class="checklist">
-      <li>Ventas acumuladas superiores a S/ 4.2 MM</li>
-      <li>Margen bruto de 60.5%</li>
-      <li>Utilidad neta superior a S/ 1 MM</li>
-      <li>Margen neto de 25.5%</li>
-      <li>Patrimonio fortalecido por resultados</li>
-      <li>Inventario suficiente para sostener crecimiento</li>
-      <li>Liquidez operativa adecuada</li>
-    </ul>
-    <div class="card soft-blue" style="margin-top:20px; border-left:8px solid var(--csp-gold);">
-      <div class="section-title">Mensaje de cierre</div>
-      <div class="callout" style="font-size:20px; line-height:1.5;">
-        CSP Lifesciences Perú presenta al cierre de mayo 2026 una posición financiera sólida,
-        con crecimiento rentable, márgenes robustos y capacidad para seguir expandiendo sus operaciones.
-        El principal foco de gestión para el segundo semestre debe centrarse en optimizar la cobranza,
-        acelerar la rotación de inventarios y reducir gradualmente la dependencia de financiamiento relacionado.
+    <h2 class="title">10. <i>Conclusiones</i> para Directorio <span class="en">| Conclusions for the Board</span></h2>
+    <div class="subtitle">Síntesis ejecutiva y mensaje de cierre <span class="en">| Executive summary and closing message</span></div>
+    <div class="slide-content">
+      <ul class="checklist">
+        <li>Ventas > S/ 4.2 MM <span class="en">| Sales > S/ 4.2 MM</span></li>
+        <li>Margen bruto 60.5% <span class="en">| Gross margin 60.5%</span></li>
+        <li>Utilidad neta > S/ 1 MM <span class="en">| Net income > S/ 1 MM</span></li>
+        <li>Margen neto 25.5% <span class="en">| Net margin 25.5%</span></li>
+        <li>Patrimonio fortalecido <span class="en">| Strengthened equity</span></li>
+        <li>Inventario suficiente <span class="en">| Sufficient inventory</span></li>
+        <li>Liquidez adecuada <span class="en">| Adequate liquidity</span></li>
+      </ul>
+      <div class="card card-primary-light" style="border-left:8px solid var(--csp-secondary); flex-shrink:0;">
+        <div class="section-title">Mensaje de cierre <span class="en">| Closing Message</span></div>
+        <div style="font-size:24px; font-weight:700; color:var(--csp-primary); line-height:1.5;">
+          CSP Lifesciences Perú presenta una posición financiera sólida con crecimiento rentable.
+          El foco debe estar en <span style="color:var(--csp-secondary);">optimizar cobranza</span>,
+          <span style="color:var(--csp-secondary);">acelerar rotación de inventarios</span>
+          y reducir dependencia de financiamiento relacionado.
+          <span class="en" style="font-size:0.45em; display:block; font-weight:400; color:var(--csp-gray-dark);">| CSP Lifesciences Perú presents a solid financial position with profitable growth. The focus should be on optimizing collection, accelerating inventory turnover, and reducing dependence on related-party financing.</span>
+        </div>
       </div>
     </div>
     <div class="footer">
-      <span>Conclusiones</span>
-      <span>CSP Lifesciences Perú | Mayo 2026</span>
+      <span class="brand">Conclusiones <span class="en">| Conclusions</span></span>
+      <span>CSP Lifesciences Perú | Mayo 2026 <span class="en">| May 2026</span></span>
     </div>
   </section>
 
-  <!-- ===== CONTROLES ===== -->
-  <div class="slide-counter" id="counter">1 / 11</div>
-  <div class="nav">
-    <button onclick="prevSlide()">← Anterior</button>
-    <button onclick="nextSlide()">Siguiente →</button>
+  <!-- ===== CONTROLES SUPERIORES ===== -->
+  <div class="nav-top">
+    <span class="counter" id="counter">1 / 11</span>
+    <button onclick="prevSlide()">◀</button>
+    <button onclick="nextSlide()">▶</button>
   </div>
 </div>
 
@@ -828,85 +1132,94 @@
     if(e.key.toLowerCase() === 'end'){ current = slides.length - 1; updateSlides(); }
   });
 
-  // ========== GRÁFICOS (colores corporativos) ==========
-  const blue = '#0b2b5c', lightBlue = '#2b6a9e', teal = '#008c8c', gold = '#c9a84c', gray = '#d1d9e6';
+  // ========== GRÁFICOS ==========
+  const primary = '#1569A9';
+  const secondary = '#01B7CE';
+  const gray = '#D1D9E6';
+  const gold = '#F5A623';
+
+  function createChart(id, config) {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+    return new Chart(canvas, config);
+  }
 
   // 1. Donut resumen
-  new Chart(document.getElementById('resumenDonut'), {
+  createChart('resumenDonut', {
     type: 'doughnut',
     data: {
       labels: ['Utilidad Neta', 'Costos y Gastos'],
-      datasets: [{ data: [25.5, 74.5], backgroundColor: [teal, '#d1d9e6'], borderWidth: 0 }]
+      datasets: [{ data: [25.5, 74.5], backgroundColor: [secondary, gray], borderWidth: 0 }]
     },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '70%' }
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '68%' }
   });
 
   // 2. Barras márgenes
-  new Chart(document.getElementById('margenChart'), {
+  createChart('margenChart', {
     type: 'bar',
     data: {
-      labels: ['Margen Bruto', 'Margen Operativo', 'Margen Neto'],
-      datasets: [{ label: '%', data: [60.5, 27.2, 25.5], backgroundColor: [teal, '#4aa3a3', gold], borderRadius: 6, barThickness: 24 }]
+      labels: ['M. Bruto', 'M. Oper.', 'M. Neto'],
+      datasets: [{ label: '%', data: [60.5, 27.2, 25.5], backgroundColor: [secondary, '#4AB7C9', primary], borderRadius: 4, barThickness: 40 }]
     },
     options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { max: 70, grid: { display: false } }, y: { grid: { display: false } } } }
   });
 
   // 3. Cartera
-  new Chart(document.getElementById('carteraChart'), {
+  createChart('carteraChart', {
     type: 'bar',
     data: {
       labels: ['Cartera', 'Ventas'],
-      datasets: [{ label: 'S/ MM', data: [1.68, 4.23], backgroundColor: [gold, lightBlue], borderRadius: 6, barThickness: 34 }]
+      datasets: [{ label: 'S/ MM', data: [1.68, 4.23], backgroundColor: [gold, primary], borderRadius: 4, barThickness: 56 }]
     },
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } } }
   });
 
   // 4. Capital de trabajo
-  new Chart(document.getElementById('ctaChart'), {
+  createChart('ctaChart', {
     type: 'doughnut',
     data: {
       labels: ['Caja', 'Ctas x Cobrar', 'Inventarios', 'Anticipos'],
-      datasets: [{ data: [420.8, 1680, 1690, 523.5], backgroundColor: [lightBlue, gold, teal, '#a0b8cc'], borderWidth: 0 }]
+      datasets: [{ data: [420.8, 1680, 1690, 523.5], backgroundColor: [primary, gold, secondary, '#A0B8CC'], borderWidth: 0 }]
     },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 9 } } } }, cutout: '60%' }
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 18, font: { size: 15 } } } }, cutout: '55%' }
   });
 
   // 5. Donut patrimonio
-  new Chart(document.getElementById('donutPatrimonio'), {
+  createChart('donutPatrimonio', {
     type: 'doughnut',
     data: {
       labels: ['Patrimonio', 'Pasivos'],
-      datasets: [{ data: [23, 77], backgroundColor: [teal, '#d1d9e6'], borderWidth: 0 }]
+      datasets: [{ data: [23, 77], backgroundColor: [secondary, gray], borderWidth: 0 }]
     },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '75%' }
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '72%' }
   });
 
   // 6. Inventario barra
-  new Chart(document.getElementById('inventarioBar'), {
+  createChart('inventarioBar', {
     type: 'bar',
     data: {
       labels: ['Inventario'],
-      datasets: [{ label: 'S/ MM', data: [1.69], backgroundColor: teal, borderRadius: 8, barThickness: 32 }]
+      datasets: [{ label: 'S/ MM', data: [1.69], backgroundColor: secondary, borderRadius: 6, barThickness: 56 }]
     },
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { display: false } }, x: { beginAtZero: true, grid: { display: false }, max: 2.0 } } }
   });
 
   // 7. Pasivos
-  new Chart(document.getElementById('pasivosChart'), {
+  createChart('pasivosChart', {
     type: 'doughnut',
     data: {
       labels: ['Ctas Relacionadas', 'Proveedores', 'Tributos', 'Remuneraciones'],
-      datasets: [{ data: [3.15, 0.204, 0.068, 0.173], backgroundColor: [lightBlue, gold, '#b42318', '#a0b8cc'], borderWidth: 0 }]
+      datasets: [{ data: [3.15, 0.204, 0.068, 0.173], backgroundColor: [primary, gold, '#D32F2F', '#A0B8CC'], borderWidth: 0 }]
     },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 9 } } } }, cutout: '60%' }
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 18, font: { size: 15 } } } }, cutout: '55%' }
   });
 
   // 8. ROE
-  new Chart(document.getElementById('roeChart'), {
+  createChart('roeChart', {
     type: 'bar',
     data: {
-      labels: ['CSP', 'Sector Promedio'],
-      datasets: [{ label: 'ROE %', data: [100.8, 18.5], backgroundColor: [gold, '#a0b8cc'], borderRadius: 6, barThickness: 36 }]
+      labels: ['CSP', 'Sector'],
+      datasets: [{ label: 'ROE %', data: [100.8, 18.5], backgroundColor: [secondary, '#A0B8CC'], borderRadius: 4, barThickness: 60 }]
     },
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } } }
   });
